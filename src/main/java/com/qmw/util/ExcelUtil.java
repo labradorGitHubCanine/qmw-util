@@ -63,7 +63,7 @@ public class ExcelUtil {
      * @param headRowNumber 表头开始的行数
      * @return List
      */
-    public static List<Map<String, String>> read(InputStream stream, int headRowNumber) {
+    public static List<Map<String, String>> readAsList(InputStream stream, int headRowNumber) {
         if (stream == null)
             throw new CheckFailedException("请选择文件！");
         DataListener listener = new DataListener();
@@ -71,8 +71,8 @@ public class ExcelUtil {
         return listener.getList();
     }
 
-    public static List<Map<String, String>> read(InputStream stream) {
-        return read(stream, 1);
+    public static List<Map<String, String>> readAsList(InputStream stream) {
+        return readAsList(stream, 1);
     }
 
     private static class DataListener extends AnalysisEventListener<Map<Integer, String>> {

@@ -70,9 +70,12 @@ public class StringUtil {
     public static String randomNumber(int scale) {
         if (scale <= 0)
             throw new RuntimeException("parameter 'scale' must be greater than 0");
-
-        return null;
+        return new StringBuilder()
+                .append(repeat("0", scale - 1))
+                .append(new Random().nextInt((int) Math.pow(10, scale)))
+                .reverse().substring(0, scale);
     }
+
 
     /**
      * 将一个字符串重复拼接times次
@@ -82,15 +85,12 @@ public class StringUtil {
      * @return string
      */
     public static String repeat(String string, int times) {
-        return null;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new Random().nextInt(1000000));
-        System.out.println(new Random().nextInt(1000000));
-        System.out.println(new Random().nextInt(1000000));
-        System.out.println(new Random().nextInt(1000000));
-        System.out.println(new Random().nextInt(1000000));
+        if (string == null)
+            return "";
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < times; i++)
+            builder.append(string);
+        return builder.toString();
     }
 
 }

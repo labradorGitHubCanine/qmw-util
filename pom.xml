@@ -11,6 +11,19 @@
     <description>util for app</description>
     <url>https://github.com/labradorGitHubCanine/qmw-util</url>
 
+    <properties>
+        <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <java.version>1.8</java.version>
+        <skipTests>true</skipTests>
+        <!-- versions -->
+        <mybatis-plus.version>3.3.2</mybatis-plus.version>
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+        <easyexcel.version>2.2.6</easyexcel.version>
+    </properties>
+
     <licenses>
         <license>
             <name>The ApacheSoftware License, Version 2.0</name>
@@ -33,25 +46,7 @@
         <url>https://github.com/labradorGitHubCanine/qmw-util.git</url>
     </scm>
 
-    <properties>
-        <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <java.version>1.8</java.version>
-        <skipTests>true</skipTests>
-        <!--        <spring-web.version>5.2.8.RELEASE</spring-web.version>-->
-        <mybatis-plus.version>3.3.2</mybatis-plus.version>
-        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
-        <easyexcel.version>2.2.6</easyexcel.version>
-    </properties>
-
     <dependencies>
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework</groupId>-->
-        <!--            <artifactId>spring-web</artifactId>-->
-        <!--            <version>${spring-web.version}</version>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus</artifactId>

@@ -1,6 +1,8 @@
 package com.qmw.util;
 
+import java.io.File;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class FileUtil {
 
@@ -21,6 +23,16 @@ public class FileUtil {
 
     public static String formatFileSize(long size) {
         return formatFileSize(size, 1);
+    }
+
+    public static String getFileType(File file) {
+        return getFileType(Objects.requireNonNull(file).getName());
+    }
+
+    public static String getFileType(String name) {
+        if (name.contains("."))
+            return name.substring(name.lastIndexOf(".") + 1);
+        return "";
     }
 
 }

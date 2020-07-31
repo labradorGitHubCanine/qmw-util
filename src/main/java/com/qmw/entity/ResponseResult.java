@@ -6,49 +6,49 @@ package com.qmw.entity;
  * @author qmw
  * @since 1.00
  */
-public class ResponseEntity {
+public class ResponseResult {
 
     private int code;
     private String msg;
     private String token;
     private Object data;
 
-    private ResponseEntity() {
+    private ResponseResult() {
     }
 
-    public static ResponseEntity ok(Object data, String msg) {
-        return new ResponseEntity().setCode(1).setMsg(msg).setData(data);
+    public static ResponseResult ok(Object data, String msg) {
+        return new ResponseResult().setCode(1).setMsg(msg).setData(data);
     }
 
-    public static ResponseEntity ok(Object data) {
+    public static ResponseResult ok(Object data) {
         return ok(data, "操作成功");
     }
 
-    public static ResponseEntity ok(String msg) {
+    public static ResponseResult ok(String msg) {
         return ok(null, msg);
     }
 
-    public static ResponseEntity ok() {
+    public static ResponseResult ok() {
         return ok(null, "操作成功");
     }
 
-    public static ResponseEntity error(String msg) {
-        return new ResponseEntity().setCode(0).setMsg(msg);
+    public static ResponseResult error(String msg) {
+        return new ResponseResult().setCode(0).setMsg(msg);
     }
 
-    public static ResponseEntity error() {
+    public static ResponseResult error() {
         return error("操作失败");
     }
 
-    public static ResponseEntity relogin(String msg) {
-        return new ResponseEntity().setCode(1000).setMsg(msg);
+    public static ResponseResult relogin(String msg) {
+        return new ResponseResult().setCode(1000).setMsg(msg);
     }
 
     public int getCode() {
         return code;
     }
 
-    public ResponseEntity setCode(int code) {
+    public ResponseResult setCode(int code) {
         this.code = code;
         return this;
     }
@@ -57,7 +57,7 @@ public class ResponseEntity {
         return msg;
     }
 
-    public ResponseEntity setMsg(String msg) {
+    public ResponseResult setMsg(String msg) {
         this.msg = msg;
         return this;
     }
@@ -66,7 +66,7 @@ public class ResponseEntity {
         return token;
     }
 
-    public ResponseEntity setToken(String token) {
+    public ResponseResult setToken(String token) {
         this.token = token;
         return this;
     }
@@ -75,7 +75,7 @@ public class ResponseEntity {
         return data;
     }
 
-    public ResponseEntity setData(Object data) {
+    public ResponseResult setData(Object data) {
         this.data = data;
         return this;
     }
