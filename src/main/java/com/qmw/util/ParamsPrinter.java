@@ -9,6 +9,9 @@ import static com.qmw.util.StringUtil.LINE_SEPARATOR;
 
 /**
  * 请求参数打印工具类
+ *
+ * @author qmw
+ * @since 1.00
  */
 public class ParamsPrinter {
 

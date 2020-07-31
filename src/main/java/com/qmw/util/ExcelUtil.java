@@ -4,10 +4,10 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.qmw.exception.CheckFailedException;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -29,7 +29,7 @@ public class ExcelUtil {
         if (StringUtil.isEmpty(fileName))
             fileName = UUID.randomUUID().toString();
         try {
-            fileName = URLEncoder.encode(fileName + ".xlsx", StandardCharsets.UTF_8.name());
+            fileName = URLEncoder.encode(fileName + ".xls", StandardCharsets.UTF_8.name());
             List<List<String>> head = new ArrayList<>(); // 表头
             List<List<Object>> data = new ArrayList<>(); // 内容
             if (list != null && !list.isEmpty()) {
@@ -59,20 +59,20 @@ public class ExcelUtil {
     /**
      * 将excel解析为List
      *
-     * @param file file
+     * @param stream        文件流
+     * @param headRowNumber 表头开始的行数
      * @return List
      */
-    public static List<Map<String, String>> read(MultipartFile file) {
-        if (file == null)
+    public static List<Map<String, String>> read(InputStream stream, int headRowNumber) {
+        if (stream == null)
             throw new CheckFailedException("请选择文件！");
         DataListener listener = new DataListener();
-        try {
-            EasyExcel.read(file.getInputStream(), listener).sheet().doRead();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new CheckFailedException("文件读取失败！");
-        }
+        EasyExcel.read(stream, listener).sheet().headRowNumber(headRowNumber).doRead();
         return listener.getList();
+    }
+
+    public static List<Map<String, String>> read(InputStream stream) {
+        return read(stream, 1);
     }
 
     private static class DataListener extends AnalysisEventListener<Map<Integer, String>> {

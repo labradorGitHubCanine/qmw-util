@@ -2,16 +2,10 @@ package com.qmw.entity;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
 public class PageX<T> extends Page<T> implements IPage<T> {
 
     // 自定义字段
@@ -26,6 +20,14 @@ public class PageX<T> extends Page<T> implements IPage<T> {
             fields = new HashMap<>();
         fields.put(key, value);
         return this;
+    }
+
+    public Map<String, Object> getFields() {
+        return fields;
+    }
+
+    public void setFields(Map<String, Object> fields) {
+        this.fields = fields;
     }
 
 }

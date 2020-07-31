@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.qmw</groupId>
+    <groupId>com.github.labradorgithubcanine</groupId>
     <artifactId>qmw-util</artifactId>
     <version>1.01</version>
     <name>qmw-util</name>
@@ -40,38 +40,33 @@
         <maven.compiler.target>8</maven.compiler.target>
         <java.version>1.8</java.version>
         <skipTests>true</skipTests>
-        <!--        <gpg.homedir>E:\env\GnuPG</gpg.homedir>-->
-        <!--        <gpg.keyname>qmwmq</gpg.keyname>-->
-        <!--        <gpg.passphrase>199249qmw</gpg.passphrase>-->
+        <!--        <spring-web.version>5.2.8.RELEASE</spring-web.version>-->
+        <mybatis-plus.version>3.3.2</mybatis-plus.version>
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+        <easyexcel.version>2.2.6</easyexcel.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>5.2.8.RELEASE</version>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework</groupId>-->
+        <!--            <artifactId>spring-web</artifactId>-->
+        <!--            <version>${spring-web.version}</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus</artifactId>
-            <version>3.3.2</version>
+            <version>${mybatis-plus.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
+            <version>${javax.servlet-api.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
-            <version>2.2.6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
-            <scope>provided</scope>
+            <version>${easyexcel.version}</version>
         </dependency>
     </dependencies>
 
@@ -139,17 +134,18 @@
                     </plugin>
                 </plugins>
             </build>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>oss</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-                </snapshotRepository>
-                <repository>
-                    <id>oss</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
         </profile>
     </profiles>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>oss</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>oss</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
 </project>

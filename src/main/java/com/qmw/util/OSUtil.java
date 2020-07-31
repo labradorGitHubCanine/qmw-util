@@ -12,7 +12,7 @@ public class OSUtil {
     }
 
     /**
-     * 判断是否wi ndows系统
+     * 判断是否windows系统
      *
      * @return boolean
      */
