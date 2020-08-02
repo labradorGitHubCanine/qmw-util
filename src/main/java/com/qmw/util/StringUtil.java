@@ -69,7 +69,7 @@ public class StringUtil {
      */
     public static String randomNumber(int scale) {
         if (scale <= 0)
-            throw new RuntimeException("parameter 'scale' must be greater than 0");
+            throw new RuntimeException("scale必须大于0");
         return new StringBuilder()
                 .append(repeat("0", scale - 1))
                 .append(new Random().nextInt((int) Math.pow(10, scale)))

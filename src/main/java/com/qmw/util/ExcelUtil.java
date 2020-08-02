@@ -3,7 +3,6 @@ package com.qmw.util;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
-import com.qmw.exception.CheckFailedException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -15,6 +14,10 @@ import java.util.*;
 
 /**
  * excel工具
+ * 2020-08-01
+ *
+ * @author qmw
+ * @since 1.00
  */
 public class ExcelUtil {
 
@@ -25,31 +28,29 @@ public class ExcelUtil {
      * @param response response
      * @param fileName 文件名，可以为空
      */
-    public static void download(List<LinkedHashMap<String, Object>> list, HttpServletResponse response, String fileName) {
-        if (StringUtil.isEmpty(fileName))
-            fileName = UUID.randomUUID().toString();
+    public static void download(List<? extends Map<String, Object>> list, HttpServletResponse response, String fileName) {
         try {
-            fileName = URLEncoder.encode(fileName + ".xls", StandardCharsets.UTF_8.name());
             List<List<String>> head = new ArrayList<>(); // 表头
             List<List<Object>> data = new ArrayList<>(); // 内容
             if (list != null && !list.isEmpty()) {
                 list.get(0).keySet().forEach(i -> head.add(Collections.singletonList(i)));
                 list.forEach(i -> {
-                    List<Object> l = new ArrayList<>();
+                    List<Object> row = new ArrayList<>();
                     i.values().forEach(j -> {
                         if (j == null)
-                            l.add("");
+                            row.add("");
                         else if (j instanceof BigDecimal)
-                            l.add(((BigDecimal) j).toPlainString());
+                            row.add(((BigDecimal) j).toPlainString());
                         else
-                            l.add(j.toString());
+                            row.add(j.toString());
                     });
-                    data.add(l);
+                    data.add(row);
                 });
             }
+            fileName = URLEncoder.encode(StringUtil.ifEmptyThen(fileName, UUID.randomUUID().toString()) + ".xls", StandardCharsets.UTF_8.name());
             response.setContentType("application/x-download");
             response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
-            EasyExcel.write(response.getOutputStream()).head(head).sheet("sheet1").doWrite(data);
+            EasyExcel.write(response.getOutputStream()).sheet("sheet1").head(head).doWrite(data);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("文件写入失败！");
@@ -64,8 +65,7 @@ public class ExcelUtil {
      * @return List
      */
     public static List<Map<String, String>> readAsList(InputStream stream, int headRowNumber) {
-        if (stream == null)
-            throw new CheckFailedException("请选择文件！");
+        Objects.requireNonNull(stream);
         DataListener listener = new DataListener();
         EasyExcel.read(stream, listener).sheet().headRowNumber(headRowNumber).doRead();
         return listener.getList();
