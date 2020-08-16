@@ -4,6 +4,12 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+/**
+ * 文件相关工具类
+ *
+ * @author qmw
+ * @since 1.00
+ */
 public class FileUtil {
 
     private final static String[] UNIT = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};

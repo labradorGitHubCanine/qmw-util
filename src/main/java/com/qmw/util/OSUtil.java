@@ -1,5 +1,11 @@
 package com.qmw.util;
 
+/**
+ * 操作系统相关工具类
+ *
+ * @author qmw
+ * @since 1.00
+ */
 public class OSUtil {
 
     public static boolean isLinux() {

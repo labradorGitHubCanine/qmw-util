@@ -6,28 +6,35 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * mybatis-plus自定义的page工具类
+ *
+ * @param <T>
+ * @author qmw
+ * @since 1.00
+ */
 public class PageX<T> extends Page<T> implements IPage<T> {
 
     // 自定义字段
-    private Map<String, Object> fields;
+    private Map<String, Object> extra;
 
     public PageX(long current, long size) {
         super(current, size);
     }
 
-    public PageX<T> addField(String key, Object value) {
-        if (fields == null)
-            fields = new HashMap<>();
-        fields.put(key, value);
+    public PageX<T> putExtra(String key, Object value) {
+        if (extra == null)
+            extra = new HashMap<>();
+        extra.put(key, value);
         return this;
     }
 
-    public Map<String, Object> getFields() {
-        return fields;
+    public Map<String, Object> getExtra() {
+        return extra;
     }
 
-    public void setFields(Map<String, Object> fields) {
-        this.fields = fields;
+    public void setExtra(Map<String, Object> extra) {
+        this.extra = extra;
     }
 
 }

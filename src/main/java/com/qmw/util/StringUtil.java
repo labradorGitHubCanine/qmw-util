@@ -2,6 +2,12 @@ package com.qmw.util;
 
 import java.util.Random;
 
+/**
+ * 字符串相关工具类
+ *
+ * @author qmw
+ * @since 1.00
+ */
 public class StringUtil {
 
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");

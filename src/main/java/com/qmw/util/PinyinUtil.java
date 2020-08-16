@@ -22,23 +22,22 @@ public class PinyinUtil {
     // 格式化方式
     private final static HanyuPinyinOutputFormat FORMAT = new HanyuPinyinOutputFormat();
 
-    // 生僻字
-    private static final Map<String, String> RARE_WORDS = new HashMap<>();
-
     static {
         FORMAT.setCaseType(HanyuPinyinCaseType.LOWERCASE);
         FORMAT.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
         FORMAT.setVCharType(HanyuPinyinVCharType.WITH_V);
     }
 
-    // 添加生僻字
+    // 生僻字库
+    private static final Map<String, String> RARE_WORDS = new HashMap<>();
+
     static {
         RARE_WORDS.put("x", "匂");
         RARE_WORDS.put("h", "丆");
     }
 
     /**
-     * 获取字符串中所有中文的拼音首字母，非中文字符将被直接拼接进去
+     * 获取字符串中所有中文的拼音首字母，非中文字符直接拼接
      *
      * @param string string
      * @return 拼音首字母
