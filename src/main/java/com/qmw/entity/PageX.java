@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * mybatis-plus自定义的page工具类
  *
- * @param <T>
+ * @param <T> 泛型
  * @author qmw
  * @since 1.00
  */
