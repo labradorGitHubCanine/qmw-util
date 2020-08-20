@@ -18,6 +18,10 @@ public class PageX<T> extends Page<T> implements IPage<T> {
     // 自定义字段
     private Map<String, Object> extra;
 
+    public PageX() {
+        super();
+    }
+
     public PageX(long current, long size) {
         super(current, size);
     }
