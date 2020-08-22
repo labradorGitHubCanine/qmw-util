@@ -19,6 +19,7 @@ public class ResponseResult<T> {
     private int code;
     private String msg, token;
     private T data;
+    private long spent;
 
     private ResponseResult() {
     }
@@ -100,6 +101,15 @@ public class ResponseResult<T> {
 
     public ResponseResult<T> setData(T data) {
         this.data = data;
+        return this;
+    }
+
+    public long getSpent() {
+        return spent;
+    }
+
+    public ResponseResult<T> setSpent(long spent) {
+        this.spent = spent;
         return this;
     }
 
