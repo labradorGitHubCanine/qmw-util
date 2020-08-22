@@ -8,14 +8,6 @@ package com.qmw.entity;
  */
 public class ResponseResult<T> {
 
-    private static int
-            OK = 1, // 成功
-            ERROR = 0, // 失败
-            RELOGIN = 1000, // 需要重新登录
-            UPGRADE = 1001, // 需要更新
-            INVALID = 1002, // 接口/链接失效
-            UNAUTHORIZED = 1003; // 没有权限
-
     private int code;
     private String msg, token;
     private T data;
@@ -27,43 +19,35 @@ public class ResponseResult<T> {
     // ---------- 静态构造
 
     public static <T> ResponseResult<T> ok(T data, String msg) {
-        return new ResponseResult<T>().setCode(OK).setMsg(msg).setData(data);
+        return new ResponseResult<T>()
+                .setCode(ResponseStatus.OK.getCode())
+                .setMsg(msg)
+                .setData(data);
     }
 
     public static <T> ResponseResult<T> ok(T data) {
-        return ok(data, "操作成功");
-    }
-
-    public static <T> ResponseResult<T> ok(String msg) {
-        return ok(null, msg);
+        return new ResponseResult<T>()
+                .setCode(ResponseStatus.OK.getCode())
+                .setMsg(ResponseStatus.OK.getMsg())
+                .setData(data);
     }
 
     public static <T> ResponseResult<T> ok() {
-        return ok(null, "操作成功");
+        return new ResponseResult<T>()
+                .setCode(ResponseStatus.OK.getCode())
+                .setMsg(ResponseStatus.OK.getMsg());
     }
 
-    public static <T> ResponseResult<T> error(String msg) {
-        return new ResponseResult<T>().setCode(ERROR).setMsg(msg);
+    public static <T> ResponseResult<T> error(ResponseStatus status, String msg) {
+        return new ResponseResult<T>()
+                .setCode(status.getCode())
+                .setMsg(msg);
     }
 
-    public static <T> ResponseResult<T> error() {
-        return error("操作失败");
-    }
-
-    public static <T> ResponseResult<T> relogin(String msg) {
-        return new ResponseResult<T>().setCode(RELOGIN).setMsg(msg);
-    }
-
-    public static <T> ResponseResult<T> upgrade(String msg) {
-        return new ResponseResult<T>().setCode(UPGRADE).setMsg(msg);
-    }
-
-    public static <T> ResponseResult<T> invalid(String msg) {
-        return new ResponseResult<T>().setCode(INVALID).setMsg(msg);
-    }
-
-    public static <T> ResponseResult<T> unauthorized(String msg) {
-        return new ResponseResult<T>().setCode(UNAUTHORIZED).setMsg(msg);
+    public static <T> ResponseResult<T> error(ResponseStatus status) {
+        return new ResponseResult<T>()
+                .setCode(status.getCode())
+                .setMsg(status.getMsg());
     }
 
     // ---------- getters and setters
@@ -111,32 +95,6 @@ public class ResponseResult<T> {
     public ResponseResult<T> setSpent(long spent) {
         this.spent = spent;
         return this;
-    }
-
-    // ---------- 自定义状态码
-
-    public static void setOK(int OK) {
-        ResponseResult.OK = OK;
-    }
-
-    public static void setERROR(int ERROR) {
-        ResponseResult.ERROR = ERROR;
-    }
-
-    public static void setRELOGIN(int RELOGIN) {
-        ResponseResult.RELOGIN = RELOGIN;
-    }
-
-    public static void setUPGRADE(int UPGRADE) {
-        ResponseResult.UPGRADE = UPGRADE;
-    }
-
-    public static void setINVALID(int INVALID) {
-        ResponseResult.INVALID = INVALID;
-    }
-
-    public static void setUNAUTHORIZED(int UNAUTHORIZED) {
-        ResponseResult.UNAUTHORIZED = UNAUTHORIZED;
     }
 
 }
