@@ -36,7 +36,7 @@ public class StringUtil {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (Character.isUpperCase(c) && i != 0) // 首字母不加下划线
+            if (i != 0 && Character.isUpperCase(c)) // 首字母不加下划线
                 sb.append("_");
             sb.append(Character.toLowerCase(c));
         }
