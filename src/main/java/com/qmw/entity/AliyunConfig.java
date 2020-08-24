@@ -1,11 +1,18 @@
 package com.qmw.entity;
 
+/**
+ * 阿里云配置类
+ *
+ * @author qmw
+ * @since 1.06
+ */
 public class AliyunConfig {
 
     private String accessKeyId;
     private String accessKeySecret;
     private String endpoint;
     private String bucketName;
+    private String signName;
 
     public String getAccessKeyId() {
         return accessKeyId;
@@ -40,6 +47,15 @@ public class AliyunConfig {
 
     public AliyunConfig setBucketName(String bucketName) {
         this.bucketName = bucketName;
+        return this;
+    }
+
+    public String getSignName() {
+        return signName;
+    }
+
+    public AliyunConfig setSignName(String signName) {
+        this.signName = signName;
         return this;
     }
 

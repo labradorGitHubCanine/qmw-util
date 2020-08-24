@@ -17,6 +17,14 @@ public class AliyunOSSUtil {
 
     private static AliyunConfig config;
 
+    public static void init(String accessKeyId, String accessKeySecret, String endpoint, String bucketName) {
+        config = new AliyunConfig()
+                .setAccessKeyId(accessKeyId)
+                .setAccessKeySecret(accessKeySecret)
+                .setEndpoint(endpoint)
+                .setBucketName(bucketName);
+    }
+
     // 上传单个文件
     public static String upload(File file, String... folder) {
         String fileName = UUID.randomUUID().toString();
@@ -48,14 +56,6 @@ public class AliyunOSSUtil {
         String objectName = url.replace("https://" + config.getBucketName() + "." + config.getEndpoint().replace("https://", "") + "/", "");
         ossClient.deleteObject(config.getBucketName(), objectName);
         ossClient.shutdown();
-    }
-
-    public static AliyunConfig getConfig() {
-        return config;
-    }
-
-    public static void setConfig(AliyunConfig config) {
-        AliyunOSSUtil.config = config;
     }
 
 }

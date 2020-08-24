@@ -19,12 +19,15 @@
         <java.version>1.8</java.version>
         <skipTests>true</skipTests>
         <!-- versions -->
+        <aliyun-java-sdk-core>4.5.7</aliyun-java-sdk-core>
         <aliyun-sdk-oss.version>3.11.0</aliyun-sdk-oss.version>
         <easyexcel.version>2.2.6</easyexcel.version>
+        <fastjson.version>1.2.73</fastjson.version>
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
         <jave.version>1.0.5</jave.version>
         <mybatis-plus.version>3.3.2</mybatis-plus.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
+        <slf4j-simple.version>1.7.30</slf4j-simple.version>
         <spring-web.version>5.2.8.RELEASE</spring-web.version>
     </properties>
 
@@ -55,11 +58,13 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus</artifactId>
             <version>${mybatis-plus.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${javax.servlet-api.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -75,6 +80,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>${spring-web.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.dadiyang</groupId>
@@ -86,11 +92,22 @@
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>${aliyun-sdk-oss.version}</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.slf4j</groupId>-->
-        <!--            <artifactId>slf4j-simple</artifactId>-->
-        <!--            <version>1.7.30</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>${aliyun-java-sdk-core}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j-simple.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
