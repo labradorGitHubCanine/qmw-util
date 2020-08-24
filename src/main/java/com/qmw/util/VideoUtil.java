@@ -4,14 +4,10 @@ import com.qmw.entity.VideoInfo;
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
 import it.sauronsoftware.jave.MultimediaInfo;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -40,27 +36,18 @@ public class VideoUtil {
     }
 
     public static VideoInfo getInfo(MultipartFile multipartFile) {
-        File file;
+        File file = null;
         try {
-            file = File.createTempFile(
-                    UUID.randomUUID().toString(),
-                    FileUtil.getFileType(Objects.requireNonNull(multipartFile.getOriginalFilename()))
-            );
+            file = File.createTempFile(UUID.randomUUID() + "-", "");
+            multipartFile.transferTo(file);
+            return getInfo(file);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("创建临时文件失败");
+            throw new RuntimeException("视频信息读取失败");
+        } finally {
+            if (file != null && file.exists())
+                file.delete();
         }
-        VideoInfo videoInfo = getInfo(file);
-//        if (file.exists())
-//            file.delete();
-        return videoInfo;
-    }
-
-    public static void main(String[] args) throws IOException {
-        File file = new File("C:\\Users\\12334\\Desktop\\test.mp4");
-        InputStream inputStream = new FileInputStream(file);
-        MultipartFile multipartFile = new MockMultipartFile(file.getName(), inputStream);
-        System.out.println(getInfo(multipartFile));
     }
 
 }

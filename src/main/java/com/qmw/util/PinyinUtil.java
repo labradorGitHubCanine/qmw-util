@@ -34,6 +34,7 @@ public class PinyinUtil {
     static {
         RARE_WORDS.put("x", "匂");
         RARE_WORDS.put("h", "丆");
+        RARE_WORDS.put("y", "昳");
     }
 
     /**

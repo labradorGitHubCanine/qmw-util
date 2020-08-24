@@ -26,12 +26,6 @@ public class PageX<T> extends Page<T> implements IPage<T> {
         super(current, size);
     }
 
-    /**
-     * asdadad
-     * @param key
-     * @param value
-     * @return
-     */
     public PageX<T> putExtra(String key, Object value) {
         if (extra == null)
             extra = new HashMap<>();
