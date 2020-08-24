@@ -9,7 +9,6 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.qmw.entity.AliyunConfig;
-import com.qmw.entity.AliyunSMSResult;
 
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ public class AliyunSMSUtil {
                 .setSignName(signName);
     }
 
-    public static AliyunSMSResult send(List<String> phoneNumbers, String templateCode, Map<String, Object> params) {
+    public static Result send(List<String> phoneNumbers, String templateCode, Map<String, Object> params) {
         DefaultProfile profile = DefaultProfile.getProfile("default", config.getAccessKeyId(), config.getAccessKeySecret());
         IAcsClient client = new DefaultAcsClient(profile);
 
@@ -46,7 +45,7 @@ public class AliyunSMSUtil {
         request.putQueryParameter("TemplateParam", JSON.toJSONString(params));
         try {
             CommonResponse response = client.getCommonResponse(request);
-            return JSON.parseObject(response.getData(), AliyunSMSResult.class);
+            return JSON.parseObject(response.getData(), Result.class);
         } catch (ClientException e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
@@ -61,5 +60,47 @@ public class AliyunSMSUtil {
 //        AliyunSMSResult result = send(Collections.singletonList("18767162021"), "SMS_99345055", params);
 //
 //    }
+
+    // 阿里云短信结果类
+    public static class Result {
+
+        private String Message;
+        private String RequestId;
+        private String BizId;
+        private String Code;
+
+        public String getMessage() {
+            return Message;
+        }
+
+        public void setMessage(String message) {
+            Message = message;
+        }
+
+        public String getRequestId() {
+            return RequestId;
+        }
+
+        public void setRequestId(String requestId) {
+            RequestId = requestId;
+        }
+
+        public String getBizId() {
+            return BizId;
+        }
+
+        public void setBizId(String bizId) {
+            BizId = bizId;
+        }
+
+        public String getCode() {
+            return Code;
+        }
+
+        public void setCode(String code) {
+            Code = code;
+        }
+
+    }
 
 }

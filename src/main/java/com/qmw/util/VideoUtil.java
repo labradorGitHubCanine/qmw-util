@@ -1,6 +1,5 @@
 package com.qmw.util;
 
-import com.qmw.entity.VideoInfo;
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
 import it.sauronsoftware.jave.MultimediaInfo;
@@ -18,7 +17,7 @@ import java.util.UUID;
  */
 public class VideoUtil {
 
-    public static VideoInfo getInfo(File file) {
+    public static Info getInfo(File file) {
         MultimediaInfo multimediaInfo;
         try {
             multimediaInfo = new Encoder().getInfo(file);
@@ -26,16 +25,16 @@ public class VideoUtil {
             e.printStackTrace();
             throw new RuntimeException("视频信息读取失败");
         }
-        VideoInfo videoInfo = new VideoInfo();
-        videoInfo.setDuration(multimediaInfo.getDuration());
-        videoInfo.setFormat(multimediaInfo.getFormat());
-        videoInfo.setHeight(multimediaInfo.getVideo().getSize().getHeight());
-        videoInfo.setWidth(multimediaInfo.getVideo().getSize().getWidth());
-        videoInfo.setSize(file.length());
-        return videoInfo;
+        Info info = new Info();
+        info.setDuration(multimediaInfo.getDuration());
+        info.setFormat(multimediaInfo.getFormat());
+        info.setHeight(multimediaInfo.getVideo().getSize().getHeight());
+        info.setWidth(multimediaInfo.getVideo().getSize().getWidth());
+        info.setSize(file.length());
+        return info;
     }
 
-    public static VideoInfo getInfo(MultipartFile multipartFile) {
+    public static Info getInfo(MultipartFile multipartFile) {
         File file = null;
         try {
             file = File.createTempFile(UUID.randomUUID() + "-", "");
@@ -48,6 +47,56 @@ public class VideoUtil {
             if (file != null && file.exists())
                 file.delete();
         }
+    }
+
+    public static class Info {
+
+        private String format; // 格式
+        private long duration; // 时长，毫秒
+        private int width; // 宽度
+        private int height; // 高度
+        private long size; // 视频大小
+
+        public String getFormat() {
+            return format;
+        }
+
+        public void setFormat(String format) {
+            this.format = format;
+        }
+
+        public long getDuration() {
+            return duration;
+        }
+
+        public void setDuration(long duration) {
+            this.duration = duration;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public void setWidth(int width) {
+            this.width = width;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public void setHeight(int height) {
+            this.height = height;
+        }
+
+        public long getSize() {
+            return size;
+        }
+
+        public void setSize(long size) {
+            this.size = size;
+        }
+
     }
 
 }
