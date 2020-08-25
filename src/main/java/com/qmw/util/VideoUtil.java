@@ -37,6 +37,7 @@ public class VideoUtil {
     public static Info getInfo(MultipartFile multipartFile) {
         File file = null;
         try {
+            // 创建临时文件
             file = File.createTempFile(UUID.randomUUID() + "-", "");
             multipartFile.transferTo(file);
             return getInfo(file);
@@ -45,7 +46,7 @@ public class VideoUtil {
             throw new RuntimeException("视频信息读取失败");
         } finally {
             if (file != null && file.exists())
-                file.delete();
+                file.delete(); // 删除文件
         }
     }
 

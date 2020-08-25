@@ -17,12 +17,16 @@ public class AliyunOSSUtil {
 
     private static AliyunConfig config;
 
-    public static void init(String accessKeyId, String accessKeySecret, String endpoint, String bucketName) {
-        config = new AliyunConfig()
-                .setAccessKeyId(accessKeyId)
-                .setAccessKeySecret(accessKeySecret)
-                .setEndpoint(endpoint)
-                .setBucketName(bucketName);
+    public static void init(AliyunConfig config) {
+        if (StringUtil.isEmpty(config.getAccessKeyId()))
+            throw new RuntimeException("请设置accessKeyId");
+        if (StringUtil.isEmpty(config.getAccessKeySecret()))
+            throw new RuntimeException("请设置accessKeySecret");
+        if (StringUtil.isEmpty(config.getEndpoint()))
+            throw new RuntimeException("请设置endpoint");
+        if (StringUtil.isEmpty(config.getBucketName()))
+            throw new RuntimeException("请设置bucketName");
+        AliyunOSSUtil.config = config;
     }
 
     // 上传单个文件

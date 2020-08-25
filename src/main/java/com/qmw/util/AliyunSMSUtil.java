@@ -23,11 +23,14 @@ public class AliyunSMSUtil {
 
     private static AliyunConfig config;
 
-    public static void init(String accessKeyId, String accessKeySecret, String signName) {
-        config = new AliyunConfig()
-                .setAccessKeyId(accessKeyId)
-                .setAccessKeySecret(accessKeySecret)
-                .setSignName(signName);
+    public static void init(AliyunConfig config) {
+        if (StringUtil.isEmpty(config.getAccessKeyId()))
+            throw new RuntimeException("请设置accessKeyId");
+        if (StringUtil.isEmpty(config.getAccessKeySecret()))
+            throw new RuntimeException("请设置accessKeySecret");
+        if (StringUtil.isEmpty(config.getSignName()))
+            throw new RuntimeException("请设置signName");
+        AliyunSMSUtil.config = config;
     }
 
     public static Result send(List<String> phoneNumbers, String templateCode, Map<String, Object> params) {
