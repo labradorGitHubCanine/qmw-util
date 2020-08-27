@@ -16,14 +16,20 @@ import java.util.UUID;
 public class AliyunOSSUtil {
 
     private static AliyunConfig config;
+    private static final String HTTP = "http://";
+    private static final String HTTPS = "https://";
 
     public static void init(AliyunConfig config) {
         if (StringUtil.isEmpty(config.getAccessKeyId()))
             throw new RuntimeException("请设置accessKeyId");
         if (StringUtil.isEmpty(config.getAccessKeySecret()))
             throw new RuntimeException("请设置accessKeySecret");
-        if (StringUtil.isEmpty(config.getEndpoint()))
+        if (StringUtil.isEmpty(config.getEndpoint())) // https://oss-cn-hangzhou.aliyuncs.com
             throw new RuntimeException("请设置endpoint");
+        if (config.getEndpoint().startsWith(HTTP))
+            config.setEndpoint(config.getEndpoint().substring(HTTP.length()));
+        else if (config.getEndpoint().startsWith(HTTPS))
+            config.setEndpoint(config.getEndpoint().substring(HTTPS.length()));
         if (StringUtil.isEmpty(config.getBucketName()))
             throw new RuntimeException("请设置bucketName");
         AliyunOSSUtil.config = config;
@@ -52,12 +58,12 @@ public class AliyunOSSUtil {
                 e.printStackTrace();
             }
         }
-        return "https://" + config.getBucketName() + "." + config.getEndpoint().replace("https://", "") + "/" + fullName;
+        return HTTPS + config.getBucketName() + "." + config.getEndpoint() + "/" + fullName;
     }
 
     public static void delete(String url) {
         OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
-        String objectName = url.replace("https://" + config.getBucketName() + "." + config.getEndpoint().replace("https://", "") + "/", "");
+        String objectName = url.replace(HTTPS + config.getBucketName() + "." + config.getEndpoint() + "/", "");
         ossClient.deleteObject(config.getBucketName(), objectName);
         ossClient.shutdown();
     }
