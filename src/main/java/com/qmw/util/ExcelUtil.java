@@ -49,12 +49,23 @@ public class ExcelUtil {
             }
             fileName = URLEncoder.encode(StringUtil.ifEmptyThen(fileName, UUID.randomUUID().toString()) + ".xls", StandardCharsets.UTF_8.name());
             response.setContentType("application/x-download");
+            response.setHeader("Access-Control-Expose-Headers", "Content-Disposition"); // 允许设置Content-Disposition
             response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
             EasyExcel.write(response.getOutputStream()).sheet("sheet1").head(head).doWrite(data);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("文件写入失败！");
         }
+    }
+
+    /**
+     * 将生成的excel返回给web前端
+     *
+     * @param list     list
+     * @param response response
+     */
+    public static void download(List<? extends Map<String, Object>> list, HttpServletResponse response) {
+        download(list, response, "");
     }
 
     /**
