@@ -1,5 +1,6 @@
 package com.qmw.util;
 
+import com.qmw.exception.CustomException;
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
 import it.sauronsoftware.jave.MultimediaInfo;
@@ -23,7 +24,7 @@ public class VideoUtil {
             multimediaInfo = new Encoder().getInfo(file);
         } catch (EncoderException e) {
             e.printStackTrace();
-            throw new RuntimeException("视频信息读取失败");
+            throw new CustomException("视频信息读取失败");
         }
         Info info = new Info();
         info.setDuration(multimediaInfo.getDuration());
@@ -43,7 +44,7 @@ public class VideoUtil {
             return getInfo(file);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("视频信息读取失败");
+            throw new CustomException("视频信息读取失败");
         } finally {
             if (file != null && file.exists())
                 file.delete(); // 删除文件

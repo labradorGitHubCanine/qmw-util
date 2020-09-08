@@ -3,6 +3,7 @@ package com.qmw.util;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.qmw.entity.AliyunConfig;
+import com.qmw.exception.CustomException;
 
 import java.io.*;
 import java.util.UUID;
@@ -21,17 +22,17 @@ public class AliyunOSSUtil {
 
     public static void init(AliyunConfig config) {
         if (StringUtil.isEmpty(config.getAccessKeyId()))
-            throw new RuntimeException("请设置accessKeyId");
+            throw new CustomException("请设置accessKeyId");
         if (StringUtil.isEmpty(config.getAccessKeySecret()))
-            throw new RuntimeException("请设置accessKeySecret");
+            throw new CustomException("请设置accessKeySecret");
         if (StringUtil.isEmpty(config.getEndpoint())) // https://oss-cn-hangzhou.aliyuncs.com
-            throw new RuntimeException("请设置endpoint");
+            throw new CustomException("请设置endpoint");
         if (config.getEndpoint().startsWith(HTTP))
             config.setEndpoint(config.getEndpoint().substring(HTTP.length()));
         else if (config.getEndpoint().startsWith(HTTPS))
             config.setEndpoint(config.getEndpoint().substring(HTTPS.length()));
         if (StringUtil.isEmpty(config.getBucketName()))
-            throw new RuntimeException("请设置bucketName");
+            throw new CustomException("请设置bucketName");
         AliyunOSSUtil.config = config;
     }
 
@@ -49,7 +50,7 @@ public class AliyunOSSUtil {
             ossClient.shutdown();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
+            throw new CustomException(e.getMessage());
         } finally {
             try {
                 if (stream != null)

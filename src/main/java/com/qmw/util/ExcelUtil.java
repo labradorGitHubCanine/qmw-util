@@ -3,6 +3,7 @@ package com.qmw.util;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
+import com.qmw.exception.CustomException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -47,14 +48,14 @@ public class ExcelUtil {
                     data.add(row);
                 });
             }
-            fileName = URLEncoder.encode(StringUtil.ifEmptyThen(fileName, UUID.randomUUID().toString()) + ".xls", StandardCharsets.UTF_8.name());
+            fileName = URLEncoder.encode(StringUtil.ifEmptyThen(fileName, UUID.randomUUID().toString()) + ".xlsx", StandardCharsets.UTF_8.name());
             response.setContentType("application/x-download");
             response.setHeader("Access-Control-Expose-Headers", "Content-Disposition"); // 允许设置Content-Disposition
             response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
             EasyExcel.write(response.getOutputStream()).sheet("sheet1").head(head).doWrite(data);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("文件写入失败！");
+            throw new CustomException("文件写入失败！");
         }
     }
 
@@ -116,5 +117,33 @@ public class ExcelUtil {
         }
 
     }
+
+//    public static void main(String[] args) {
+//        Workbook workbook = new XSSFWorkbook();
+//        Sheet sheet = workbook.createSheet();
+//        Cell cell = sheet.createRow(0).createCell(0);
+//        cell.setCellValue(123);
+//
+//        CellStyle style = workbook.createCellStyle();
+//        style.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
+//        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+//
+//        cell.setCellStyle(style);
+//
+//        FileOutputStream out = null;
+//        try {
+//            out = new FileOutputStream("C:\\Users\\12334\\Desktop\\1.xlsx");
+//            workbook.write(out);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                if (out != null)
+//                    out.close();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
 }

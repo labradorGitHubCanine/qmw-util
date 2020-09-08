@@ -1,5 +1,7 @@
 package com.qmw.util;
 
+import com.qmw.exception.CustomException;
+
 import java.util.Random;
 
 /**
@@ -75,7 +77,7 @@ public class StringUtil {
      */
     public static String randomNumber(int scale) {
         if (scale <= 0)
-            throw new RuntimeException("scale必须大于0");
+            throw new CustomException("scale必须大于0");
         return new StringBuilder()
                 .append(repeat("0", scale - 1))
                 .append(new Random().nextInt((int) Math.pow(10, scale)))
