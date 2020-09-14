@@ -6,7 +6,7 @@
 
     <groupId>com.github.labradorgithubcanine</groupId>
     <artifactId>qmw-util</artifactId>
-    <version>1.10</version>
+    <version>1.17</version>
     <name>qmw-util</name>
     <description>util for app</description>
     <url>https://github.com/labradorGitHubCanine/qmw-util</url>
@@ -19,17 +19,20 @@
         <java.version>1.8</java.version>
         <skipTests>true</skipTests>
         <!-- versions -->
-        <aliyun-java-sdk-core.version>4.5.7</aliyun-java-sdk-core.version>
+        <aliyun-java-sdk-core.version>4.5.8</aliyun-java-sdk-core.version>
         <aliyun-sdk-oss.version>3.11.0</aliyun-sdk-oss.version>
         <easyexcel.version>2.2.6</easyexcel.version>
         <fastjson.version>1.2.73</fastjson.version>
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
-        <jave.version>1.0.5</jave.version>
+        <jave.version>1.0.2</jave.version>
+        <lombok.version>1.18.12</lombok.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
+        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <slf4j-simple.version>1.7.30</slf4j-simple.version>
         <spring-web.version>5.2.8.RELEASE</spring-web.version>
@@ -57,6 +60,14 @@
         <url>https://github.com/labradorGitHubCanine/qmw-util.git</url>
     </scm>
 
+    <repositories>
+        <repository>
+            <id>project.local</id>
+            <name>project</name>
+            <url>file:${basedir}/src/main/resources/lib/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -68,6 +79,7 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${javax.servlet-api.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -86,9 +98,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.dadiyang</groupId>
+            <groupId>it.sauronsoftware</groupId>
             <artifactId>jave</artifactId>
             <version>${jave.version}</version>
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${project.basedir}/src/main/resources/lib/jave-1.0.2.jar</systemPath>-->
         </dependency>
         <dependency>
             <groupId>com.aliyun.oss</groupId>
@@ -109,6 +123,12 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j-simple.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- plugins -->
@@ -116,30 +136,86 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
             <version>${maven-source-plugin.version}</version>
-            <scope>provided</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>${maven-javadoc-plugin.version}</version>
-            <scope>provided</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
             <version>${maven-gpg-plugin.version}</version>
-            <scope>provided</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <version>${maven-compiler-plugin.version}</version>
-            <scope>provided</scope>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>${nexus-staging-maven-plugin.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-install-plugin</artifactId>
+            <version>${maven-install-plugin.version}</version>
         </dependency>
     </dependencies>
 
     <build>
         <defaultGoal>compile</defaultGoal>
+        <plugins>
+<!--            <plugin>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <version>${maven-compiler-plugin.version}</version>-->
+<!--                <configuration>-->
+<!--                    <compilerArguments>-->
+<!--                        <extdirs>${project.basedir}/src/main/resources/lib</extdirs>-->
+<!--                    </compilerArguments>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>${maven-install-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>install-jave</id>
+                        <phase>deploy</phase>
+                        <configuration>
+                            <file>${project.basedir}/src/main/resources/lib/jave-1.0.2.jar</file>
+                            <groupId>it.sauronsoftware</groupId>
+                            <artifactId>jave</artifactId>
+                            <version>${jave.version}</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- 用于自动发布 -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>${nexus-staging-maven-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>oss</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <profiles>
