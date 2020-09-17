@@ -32,6 +32,12 @@ public class ResponseResult<T> {
                 .setData(data);
     }
 
+    public static <T> ResponseResult<T> ok(String msg) {
+        return new ResponseResult<T>()
+                .setCode(ResponseStatus.OK.getCode())
+                .setMsg(msg);
+    }
+
     public static <T> ResponseResult<T> ok() {
         return new ResponseResult<T>()
                 .setCode(ResponseStatus.OK.getCode())
