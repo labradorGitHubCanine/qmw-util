@@ -6,7 +6,7 @@
 
     <groupId>com.github.labradorgithubcanine</groupId>
     <artifactId>qmw-util</artifactId>
-    <version>1.17</version>
+    <version>1.18</version>
     <name>qmw-util</name>
     <description>util for app</description>
     <url>https://github.com/labradorGitHubCanine/qmw-util</url>
@@ -24,12 +24,11 @@
         <easyexcel.version>2.2.6</easyexcel.version>
         <fastjson.version>1.2.73</fastjson.version>
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
-        <jave.version>1.0.2</jave.version>
+        <jave.version>1.0.5</jave.version>
         <lombok.version>1.18.12</lombok.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
-        <maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
@@ -59,14 +58,6 @@
         <developerConnection>https://github.com/labradorGitHubCanine</developerConnection>
         <url>https://github.com/labradorGitHubCanine/qmw-util.git</url>
     </scm>
-
-    <repositories>
-        <repository>
-            <id>project.local</id>
-            <name>project</name>
-            <url>file:${basedir}/src/main/resources/lib/</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
@@ -98,11 +89,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>it.sauronsoftware</groupId>
+            <groupId>com.github.dadiyang</groupId>
             <artifactId>jave</artifactId>
             <version>${jave.version}</version>
-<!--            <scope>system</scope>-->
-<!--            <systemPath>${project.basedir}/src/main/resources/lib/jave-1.0.2.jar</systemPath>-->
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.aliyun.oss</groupId>
@@ -162,47 +152,11 @@
             <version>${nexus-staging-maven-plugin.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-install-plugin</artifactId>
-            <version>${maven-install-plugin.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
         <defaultGoal>compile</defaultGoal>
         <plugins>
-<!--            <plugin>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <version>${maven-compiler-plugin.version}</version>-->
-<!--                <configuration>-->
-<!--                    <compilerArguments>-->
-<!--                        <extdirs>${project.basedir}/src/main/resources/lib</extdirs>-->
-<!--                    </compilerArguments>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>${maven-install-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>install-jave</id>
-                        <phase>deploy</phase>
-                        <configuration>
-                            <file>${project.basedir}/src/main/resources/lib/jave-1.0.2.jar</file>
-                            <groupId>it.sauronsoftware</groupId>
-                            <artifactId>jave</artifactId>
-                            <version>${jave.version}</version>
-                            <packaging>jar</packaging>
-                            <generatePom>true</generatePom>
-                        </configuration>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <!-- 用于自动发布 -->
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
