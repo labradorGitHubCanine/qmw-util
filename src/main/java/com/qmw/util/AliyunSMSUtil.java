@@ -9,6 +9,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.qmw.entity.AliyunConfig;
+import com.qmw.exception.CustomException;
 
 import java.util.List;
 import java.util.Map;
@@ -25,11 +26,11 @@ public class AliyunSMSUtil {
 
     public static void init(AliyunConfig config) {
         if (StringUtil.isEmpty(config.getAccessKeyId()))
-            throw new RuntimeException("请设置accessKeyId");
+            throw new CustomException("请设置accessKeyId");
         if (StringUtil.isEmpty(config.getAccessKeySecret()))
-            throw new RuntimeException("请设置accessKeySecret");
+            throw new CustomException("请设置accessKeySecret");
         if (StringUtil.isEmpty(config.getSignName()))
-            throw new RuntimeException("请设置signName");
+            throw new CustomException("请设置signName");
         AliyunSMSUtil.config = config;
     }
 
@@ -51,18 +52,9 @@ public class AliyunSMSUtil {
             return JSON.parseObject(response.getData(), Result.class);
         } catch (ClientException e) {
             e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
+            throw new CustomException(e.getMessage());
         }
     }
-
-//    public static void main(String[] args) {
-//        init("LTAI4G6V61wjTjoZxjhBhizt", "z5qsNrE851TSg3c6RK6LkauSeF1fzb", "阿里云短信测试专用");
-//
-//        Map<String, Object> params = new HashMap<>();
-//        params.put("customer", "嘿嘿");
-//        AliyunSMSResult result = send(Collections.singletonList("18767162021"), "SMS_99345055", params);
-//
-//    }
 
     // 阿里云短信结果类
     public static class Result {

@@ -1,7 +1,11 @@
 package com.qmw.exception;
 
 import com.qmw.entity.ResponseStatus;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class CustomException extends RuntimeException {
 
     private ResponseStatus status;
@@ -24,14 +28,6 @@ public class CustomException extends RuntimeException {
     public CustomException() {
         super(ResponseStatus.ERROR.getMsg());
         this.status = ResponseStatus.ERROR;
-    }
-
-    public ResponseStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ResponseStatus status) {
-        this.status = status;
     }
 
 }

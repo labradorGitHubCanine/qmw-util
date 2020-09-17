@@ -1,5 +1,7 @@
 package com.qmw.util;
 
+import com.qmw.exception.CustomException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -38,7 +40,7 @@ public class DateUtil {
             long timeMillis = new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime();
             return new java.sql.Date(timeMillis);
         } catch (ParseException e) {
-            throw new RuntimeException("日期格式错误：" + date + "，正确格式应为yyyy-MM-dd");
+            throw new CustomException("日期格式错误：" + date + "，正确格式应为yyyy-MM-dd");
         }
     }
 

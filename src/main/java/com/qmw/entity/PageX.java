@@ -2,6 +2,8 @@ package com.qmw.entity;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +15,8 @@ import java.util.Map;
  * @author qmw
  * @since 1.00
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class PageX<T> extends Page<T> implements IPage<T> {
 
     // 自定义字段
@@ -26,19 +30,23 @@ public class PageX<T> extends Page<T> implements IPage<T> {
         super(current, size);
     }
 
+    public PageX(long current, long size, long total) {
+        super(current, size, total);
+    }
+
+    public PageX(long current, long size, boolean isSearchCount) {
+        super(current, size, isSearchCount);
+    }
+
+    public PageX(long current, long size, long total, boolean isSearchCount) {
+        super(current, size, total, isSearchCount);
+    }
+
     public PageX<T> putExtra(String key, Object value) {
         if (extra == null)
             extra = new HashMap<>();
         extra.put(key, value);
         return this;
-    }
-
-    public Map<String, Object> getExtra() {
-        return extra;
-    }
-
-    public void setExtra(Map<String, Object> extra) {
-        this.extra = extra;
     }
 
 }

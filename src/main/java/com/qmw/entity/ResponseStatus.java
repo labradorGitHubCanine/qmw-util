@@ -10,8 +10,8 @@ public enum ResponseStatus {
     INVALID(1002, "您所访问的链接已经失效"),
     UNAUTHORIZED(1003, "您没有访问权限");
 
-    private int code;
-    private String msg;
+    private final int code;
+    private final String msg;
 
     ResponseStatus(int code, String msg) {
         this.code = code;
@@ -22,16 +22,8 @@ public enum ResponseStatus {
         return code;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
     public String getMsg() {
         return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
     }
 
 }

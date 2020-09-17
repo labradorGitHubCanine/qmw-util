@@ -24,6 +24,21 @@ public class NumberUtil {
     }
 
     /**
+     * 判断是否为整数
+     *
+     * @param object object
+     * @return boolean
+     */
+    public static boolean isInteger(Object object) {
+        try {
+            Integer.parseInt(object.toString());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
      * 将字符串转换未纯数字（剔除非数字的部分）
      *
      * @param string string

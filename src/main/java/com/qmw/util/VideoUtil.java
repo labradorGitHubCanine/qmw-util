@@ -1,8 +1,12 @@
 package com.qmw.util;
 
+import com.qmw.exception.CustomException;
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
 import it.sauronsoftware.jave.MultimediaInfo;
+import it.sauronsoftware.jave.VideoInfo;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -17,20 +21,31 @@ import java.util.UUID;
  */
 public class VideoUtil {
 
+//    public static void main(String[] args) {
+//        Info info = getInfo(new File("C:\\Users\\12334\\Desktop\\lombok.ogv"));
+//        System.out.println(info);
+//    }
+
     public static Info getInfo(File file) {
         MultimediaInfo multimediaInfo;
         try {
             multimediaInfo = new Encoder().getInfo(file);
         } catch (EncoderException e) {
             e.printStackTrace();
-            throw new RuntimeException("视频信息读取失败");
+            throw new CustomException("视频信息读取失败");
         }
-        Info info = new Info();
-        info.setDuration(multimediaInfo.getDuration());
-        info.setFormat(multimediaInfo.getFormat());
-        info.setHeight(multimediaInfo.getVideo().getSize().getHeight());
-        info.setWidth(multimediaInfo.getVideo().getSize().getWidth());
-        info.setSize(file.length());
+        if (multimediaInfo == null)
+            throw new CustomException("视频信息读取失败");
+        Info info = new Info()
+                .setDuration(multimediaInfo.getDuration())
+                .setFormat(multimediaInfo.getFormat())
+                .setSize(file.length());
+
+        VideoInfo videoInfo = multimediaInfo.getVideo();
+        if (videoInfo != null) {
+            info.setHeight(videoInfo.getSize().getHeight());
+            info.setWidth(videoInfo.getSize().getWidth());
+        }
         return info;
     }
 
@@ -43,60 +58,22 @@ public class VideoUtil {
             return getInfo(file);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("视频信息读取失败");
+            throw new CustomException("视频信息读取失败");
         } finally {
             if (file != null && file.exists())
                 file.delete(); // 删除文件
         }
     }
 
+    @Data
+    @Accessors(chain = true)
     public static class Info {
 
         private String format; // 格式
-        private long duration; // 时长，毫秒
+        private long duration; // 时长，
         private int width; // 宽度
         private int height; // 高度
         private long size; // 视频大小
-
-        public String getFormat() {
-            return format;
-        }
-
-        public void setFormat(String format) {
-            this.format = format;
-        }
-
-        public long getDuration() {
-            return duration;
-        }
-
-        public void setDuration(long duration) {
-            this.duration = duration;
-        }
-
-        public int getWidth() {
-            return width;
-        }
-
-        public void setWidth(int width) {
-            this.width = width;
-        }
-
-        public int getHeight() {
-            return height;
-        }
-
-        public void setHeight(int height) {
-            this.height = height;
-        }
-
-        public long getSize() {
-            return size;
-        }
-
-        public void setSize(long size) {
-            this.size = size;
-        }
 
     }
 
