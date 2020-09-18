@@ -61,4 +61,10 @@ public class ResponseResult<T> {
                 .setMsg(status.getMsg());
     }
 
+    public static <T> ResponseResult<T> error() {
+        return new ResponseResult<T>()
+                .setCode(ResponseStatus.ERROR.getCode())
+                .setMsg(ResponseStatus.ERROR.getMsg());
+    }
+
 }
