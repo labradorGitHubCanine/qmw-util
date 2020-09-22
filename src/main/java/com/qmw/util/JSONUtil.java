@@ -18,7 +18,7 @@ public class JSONUtil {
      */
     public static boolean isValidObject(String string) {
         try {
-            if (!string.startsWith("{") || !string.startsWith("}"))
+            if (!string.startsWith("{") || !string.endsWith("}"))
                 return false;
             JSON.parseObject(string);
             return true;
@@ -35,7 +35,7 @@ public class JSONUtil {
      */
     public static boolean isValidArray(String string) {
         try {
-            if (!string.startsWith("[") || !string.startsWith("]"))
+            if (!string.startsWith("[") || !string.endsWith("]"))
                 return false;
             JSON.parseArray(string);
             return true;

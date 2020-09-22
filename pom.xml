@@ -6,7 +6,7 @@
 
     <groupId>com.github.labradorgithubcanine</groupId>
     <artifactId>qmw-util</artifactId>
-    <version>1.20</version>
+    <version>1.22</version>
     <name>qmw-util</name>
     <description>util for app</description>
     <url>https://github.com/labradorGitHubCanine/qmw-util</url>
