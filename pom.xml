@@ -6,7 +6,7 @@
 
     <groupId>com.github.labradorgithubcanine</groupId>
     <artifactId>qmw-util</artifactId>
-    <version>1.22</version>
+    <version>1.24</version>
     <name>qmw-util</name>
     <description>util for app</description>
     <url>https://github.com/labradorGitHubCanine/qmw-util</url>
@@ -19,7 +19,7 @@
         <java.version>1.8</java.version>
         <skipTests>true</skipTests>
         <!-- versions -->
-        <aliyun-java-sdk-core.version>4.5.8</aliyun-java-sdk-core.version>
+        <aliyun-java-sdk-core.version>4.5.10</aliyun-java-sdk-core.version>
         <aliyun-sdk-oss.version>3.11.0</aliyun-sdk-oss.version>
         <easyexcel.version>2.2.6</easyexcel.version>
         <fastjson.version>1.2.73</fastjson.version>
@@ -34,7 +34,7 @@
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <slf4j-simple.version>1.7.30</slf4j-simple.version>
-        <spring-web.version>5.2.8.RELEASE</spring-web.version>
+        <spring-web.version>5.2.9.RELEASE</spring-web.version>
     </properties>
 
     <licenses>

@@ -29,7 +29,7 @@ public class ExcelUtil {
      * @param response response
      * @param fileName 文件名，可以为空
      */
-    public static void download(List<? extends Map<String, Object>> list, HttpServletResponse response, String fileName) {
+    public static void download(List<? extends Map<String, ?>> list, HttpServletResponse response, String fileName) {
         try {
             List<List<String>> head = new ArrayList<>(); // 表头
             List<List<Object>> data = new ArrayList<>(); // 内容
@@ -65,7 +65,7 @@ public class ExcelUtil {
      * @param list     list
      * @param response response
      */
-    public static void download(List<? extends Map<String, Object>> list, HttpServletResponse response) {
+    public static void download(List<? extends Map<String, ?>> list, HttpServletResponse response) {
         download(list, response, "");
     }
 

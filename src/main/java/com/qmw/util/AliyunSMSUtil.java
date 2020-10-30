@@ -56,6 +56,11 @@ public class AliyunSMSUtil {
         }
     }
 
+    // 请求参数类
+    public static class Params {
+
+    }
+
     // 阿里云短信结果类
     public static class Result {
 

@@ -15,7 +15,7 @@ public class StringUtil {
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     public static boolean isEmpty(Object object) {
-        return object == null || object.toString().trim().isEmpty();
+        return object == null || object.toString().trim().isEmpty() || object.toString().trim().equalsIgnoreCase("null");
     }
 
     public static String ifEmptyThen(Object object, String string) {
