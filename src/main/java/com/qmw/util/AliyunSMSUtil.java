@@ -8,11 +8,12 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
-import com.qmw.entity.AliyunConfig;
 import com.qmw.exception.CustomException;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * 阿里云短信工具类
@@ -22,20 +23,22 @@ import java.util.Map;
  */
 public class AliyunSMSUtil {
 
-    private static AliyunConfig config;
+    private static String ACCESS_KEY_ID;
+    private static String ACCESS_KEY_SECRET;
+    private static String SIGN_NAME; // 短信签名：例如【顺丰】
 
-    public static void init(AliyunConfig config) {
-        if (StringUtil.isEmpty(config.getAccessKeyId()))
-            throw new CustomException("请设置accessKeyId");
-        if (StringUtil.isEmpty(config.getAccessKeySecret()))
-            throw new CustomException("请设置accessKeySecret");
-        if (StringUtil.isEmpty(config.getSignName()))
-            throw new CustomException("请设置signName");
-        AliyunSMSUtil.config = config;
+    // 初始化参数，可在项目启动时调用一次
+    public static void init(String accessKeyId, String accessKeySecret, String signName) {
+        ACCESS_KEY_ID = accessKeyId;
+        ACCESS_KEY_SECRET = accessKeySecret;
+        SIGN_NAME = signName;
     }
 
-    public static Result send(List<String> phoneNumbers, String templateCode, Map<String, Object> params) {
-        DefaultProfile profile = DefaultProfile.getProfile("default", config.getAccessKeyId(), config.getAccessKeySecret());
+    public static Result send(Iterable<String> phoneNumbers, String templateCode, Params params) {
+        if (ACCESS_KEY_ID == null || ACCESS_KEY_SECRET == null || SIGN_NAME == null)
+            throw new CustomException("请先调用init方法进行初始化");
+
+        DefaultProfile profile = DefaultProfile.getProfile("default", ACCESS_KEY_ID, ACCESS_KEY_SECRET);
         IAcsClient client = new DefaultAcsClient(profile);
 
         CommonRequest request = new CommonRequest();
@@ -44,62 +47,57 @@ public class AliyunSMSUtil {
         request.setSysVersion("2017-05-25");
         request.setSysAction("SendSms");
         request.putQueryParameter("PhoneNumbers", String.join(",", phoneNumbers));
-        request.putQueryParameter("SignName", config.getSignName());
+        request.putQueryParameter("SignName", SIGN_NAME);
         request.putQueryParameter("TemplateCode", templateCode);
-        request.putQueryParameter("TemplateParam", JSON.toJSONString(params));
+        request.putQueryParameter("TemplateParam", JSON.toJSONString(params.getMap()));
         try {
             CommonResponse response = client.getCommonResponse(request);
             return JSON.parseObject(response.getData(), Result.class);
         } catch (ClientException e) {
             e.printStackTrace();
-            throw new CustomException(e.getMessage());
+            return new Result().setMessage(e.getMessage());
         }
+    }
+
+    public static Result send(Iterable<String> phoneNumbers, String templateCode) {
+        return send(phoneNumbers, templateCode, new Params());
+    }
+
+    public static Result send(String phoneNumber, String templateCode, Params params) {
+        return send(Collections.singletonList(phoneNumber), templateCode, params);
+    }
+
+    public static Result send(String phoneNumber, String templateCode) {
+        return send(Collections.singletonList(phoneNumber), templateCode, new Params());
     }
 
     // 请求参数类
     public static class Params {
 
+        private HashMap<String, Object> map;
+
+        public Params put(String key, Object value) {
+            if (map == null)
+                map = new HashMap<>();
+            map.put(key, value);
+            return this;
+        }
+
+        public HashMap<String, Object> getMap() {
+            return map == null ? new HashMap<>() : map;
+        }
+
     }
 
     // 阿里云短信结果类
+    @Data
+    @Accessors(chain = true)
     public static class Result {
 
         private String Message;
         private String RequestId;
         private String BizId;
         private String Code;
-
-        public String getMessage() {
-            return Message;
-        }
-
-        public void setMessage(String message) {
-            Message = message;
-        }
-
-        public String getRequestId() {
-            return RequestId;
-        }
-
-        public void setRequestId(String requestId) {
-            RequestId = requestId;
-        }
-
-        public String getBizId() {
-            return BizId;
-        }
-
-        public void setBizId(String bizId) {
-            BizId = bizId;
-        }
-
-        public String getCode() {
-            return Code;
-        }
-
-        public void setCode(String code) {
-            Code = code;
-        }
 
     }
 
