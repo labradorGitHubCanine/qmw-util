@@ -8,7 +8,6 @@ import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
-import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.qmw.exception.CustomException;
 import org.apache.poi.ss.usermodel.IndexedColors;
 
@@ -18,8 +17,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -49,12 +46,10 @@ public class ExcelUtil {
 
             fileName = URLEncoder.encode(StringUtil.ifEmptyThen(fileName, UUID.randomUUID().toString()) + ".xlsx", StandardCharsets.UTF_8.name());
             response.setContentType("application/x-download");
-            response.setHeader("Access-Control-Expose-Headers", "Content-Disposition"); // 允许设置Content-Disposition
+            response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
             response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
-//            ExcelWriter writer = EasyExcel.write("C:\\Users\\12334\\Desktop\\" + fileName)
             ExcelWriter writer = EasyExcel.write(response.getOutputStream())
-                    .registerWriteHandler(new HorizontalCellStyleStrategy(headStyle, new WriteCellStyle())) // 注册自定义样式
-//                    .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()) // 自动列宽
+                    .registerWriteHandler(new HorizontalCellStyleStrategy(headStyle, new WriteCellStyle()))
                     .build();
 
             if (map != null) {
@@ -63,7 +58,7 @@ public class ExcelUtil {
                     String sheetName = e.getKey();
                     List<? extends Map<String, ?>> list = e.getValue();
                     List<List<String>> head = new ArrayList<>(); // 表头
-                    List<List<Object>> data = new ArrayList<>(); // 内容
+                    List<List<String>> data = new ArrayList<>(); // 内容
                     if (list != null && !list.isEmpty()) {
                         // 取所有表头的并集
                         LinkedHashSet<String> set = new LinkedHashSet<>();
@@ -72,16 +67,12 @@ public class ExcelUtil {
                         set.clear(); // 释放内存
                         // 写入内容
                         list.forEach(i -> {
-                            List<Object> row = new ArrayList<>();
+                            List<String> row = new ArrayList<>();
                             head.forEach(j -> {
                                 Object value = i.get(j.get(0));
                                 if (value instanceof Number) // 防止变成科学计数
                                     value = new BigDecimal(value.toString()).toPlainString();
-                                else if (value instanceof Date) // 不转换会报错
-                                    value = value.toString();
-                                else if (value instanceof Timestamp) // 不转换会报错
-                                    value = value.toString();
-                                row.add(value);
+                                row.add(value.toString());
                             });
                             data.add(row);
                         });

@@ -2,7 +2,6 @@ package com.qmw.util;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
-import com.qmw.entity.AliyunConfig;
 import com.qmw.exception.CustomException;
 
 import java.io.*;
@@ -16,24 +15,21 @@ import java.util.UUID;
  */
 public class AliyunOSSUtil {
 
-    private static AliyunConfig config;
-    private static final String HTTP = "http://";
-    private static final String HTTPS = "https://";
+    private static String ACCESS_KEY_ID;
+    private static String ACCESS_KEY_SECRET;
+    private static String ENDPOINT; // 不带 http或https的那部分 例如:oss-cn-hangzhou.aliyuncs.com
+    private static String BUCKET_NAME;
 
-    public static void init(AliyunConfig config) {
-        if (StringUtil.isEmpty(config.getAccessKeyId()))
-            throw new CustomException("请设置accessKeyId");
-        if (StringUtil.isEmpty(config.getAccessKeySecret()))
-            throw new CustomException("请设置accessKeySecret");
-        if (StringUtil.isEmpty(config.getEndpoint())) // https://oss-cn-hangzhou.aliyuncs.com
-            throw new CustomException("请设置endpoint");
-        if (config.getEndpoint().startsWith(HTTP))
-            config.setEndpoint(config.getEndpoint().substring(HTTP.length()));
-        else if (config.getEndpoint().startsWith(HTTPS))
-            config.setEndpoint(config.getEndpoint().substring(HTTPS.length()));
-        if (StringUtil.isEmpty(config.getBucketName()))
-            throw new CustomException("请设置bucketName");
-        AliyunOSSUtil.config = config;
+    public static void init(
+            String accessKeyId,
+            String accessKeySecret,
+            String endpoint,
+            String bucketName
+    ) {
+        ACCESS_KEY_ID = accessKeyId;
+        ACCESS_KEY_SECRET = accessKeySecret;
+        ENDPOINT = endpoint;
+        BUCKET_NAME = bucketName;
     }
 
     // 上传单个文件
@@ -42,11 +38,11 @@ public class AliyunOSSUtil {
         String fileType = FileUtil.getFileType(file);
         String fullName = (folder == null || folder.length == 0 ? "" : String.join("/", folder) + "/") + fileName + "." + fileType;
         // 创建OSSClient实例。
-        OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
+        OSS ossClient = new OSSClientBuilder().build(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
         InputStream stream = null;
         try {
             stream = new FileInputStream(file);
-            ossClient.putObject(config.getBucketName(), fullName, stream);
+            ossClient.putObject(BUCKET_NAME, fullName, stream);
             ossClient.shutdown();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -59,13 +55,13 @@ public class AliyunOSSUtil {
                 e.printStackTrace();
             }
         }
-        return HTTPS + config.getBucketName() + "." + config.getEndpoint() + "/" + fullName;
+        return "https://" + BUCKET_NAME + "." + ENDPOINT + "/" + fullName;
     }
 
     public static void delete(String url) {
-        OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
-        String objectName = url.replace(HTTPS + config.getBucketName() + "." + config.getEndpoint() + "/", "");
-        ossClient.deleteObject(config.getBucketName(), objectName);
+        OSS ossClient = new OSSClientBuilder().build(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
+        String objectName = url.replace("https://" + BUCKET_NAME + "." + ENDPOINT + "/", "");
+        ossClient.deleteObject(BUCKET_NAME, objectName);
         ossClient.shutdown();
     }
 

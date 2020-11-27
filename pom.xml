@@ -6,7 +6,7 @@
 
     <groupId>com.github.labradorgithubcanine</groupId>
     <artifactId>qmw-util</artifactId>
-    <version>1.29</version>
+    <version>1.30</version>
     <name>qmw-util</name>
     <description>util for app</description>
     <url>https://github.com/labradorGitHubCanine/qmw-util</url>
@@ -30,7 +30,7 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <mybatis-plus.version>3.4.0</mybatis-plus.version>
+        <mybatis-plus.version>3.4.1</mybatis-plus.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <slf4j-simple.version>1.7.30</slf4j-simple.version>
@@ -70,7 +70,7 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${javax.servlet-api.version}</version>
-<!--            <scope>provided</scope>-->
+            <!--            <scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
