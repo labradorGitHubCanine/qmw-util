@@ -3,8 +3,11 @@ package com.qmw.util;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.qmw.exception.CustomException;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -33,20 +36,19 @@ public class AliyunOSSUtil {
     }
 
     // 上传单个文件
-    public static String upload(File file, String... folder) {
+    public static String upload(MultipartFile file, String path) {
         String fileName = UUID.randomUUID().toString();
-        String fileType = FileUtil.getFileType(file);
-        String fullName = (folder == null || folder.length == 0 ? "" : String.join("/", folder) + "/") + fileName + "." + fileType;
+        String fileType = FileUtil.getFileType(Objects.requireNonNull(file.getOriginalFilename()));
+        String fullName = StringUtil.ifEmptyThen(path, "") + fileName + "." + fileType;
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
         InputStream stream = null;
         try {
-            stream = new FileInputStream(file);
+            stream = file.getInputStream();
             ossClient.putObject(BUCKET_NAME, fullName, stream);
             ossClient.shutdown();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            throw new CustomException(e.getMessage());
+        } catch (IOException e) {
+            throw new CustomException("文件解析失败");
         } finally {
             try {
                 if (stream != null)
@@ -56,6 +58,10 @@ public class AliyunOSSUtil {
             }
         }
         return "https://" + BUCKET_NAME + "." + ENDPOINT + "/" + fullName;
+    }
+
+    public static String upload(MultipartFile file) {
+        return upload(file, "");
     }
 
     public static void delete(String url) {

@@ -37,11 +37,12 @@ public class ResponseResult<T> {
                 .setData(data);
     }
 
-    public static <T> ResponseResult<T> ok(String msg) {
-        return new ResponseResult<T>()
-                .setCode(ResponseStatus.OK.getCode())
-                .setMsg(msg);
-    }
+    // 2020-12-14 当使用一个字符串作为返回参数时此方法会造成混淆，需要自定义返回消息请使用 ok(T data, String msg)
+//    public static <T> ResponseResult<T> ok(String msg) {
+//        return new ResponseResult<T>()
+//                .setCode(ResponseStatus.OK.getCode())
+//                .setMsg(msg);
+//    }
 
     public static <T> ResponseResult<T> ok() {
         return new ResponseResult<T>()
