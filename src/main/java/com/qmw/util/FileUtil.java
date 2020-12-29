@@ -1,7 +1,11 @@
 package com.qmw.util;
 
-import java.io.File;
+import com.qmw.exception.CustomException;
+
+import java.io.*;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Objects;
 
 /**
@@ -39,6 +43,48 @@ public class FileUtil {
         if (name.contains("."))
             return name.substring(name.lastIndexOf(".") + 1);
         return "";
+    }
+
+    /**
+     * 远程下载文件到本地
+     * create 2020-12-18
+     *
+     * @param remoteUrl     网络文件链接
+     * @param localFilePath 本地保存路径
+     */
+    public static File remoteDownload(String remoteUrl, String localFilePath) {
+        URL urlfile;
+        HttpURLConnection httpUrl;
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        File file = new File(localFilePath);
+        try {
+            urlfile = new URL(remoteUrl);
+            httpUrl = (HttpURLConnection) urlfile.openConnection();
+            httpUrl.connect();
+            bis = new BufferedInputStream(httpUrl.getInputStream());
+            bos = new BufferedOutputStream(new FileOutputStream(file));
+            int len = 2048;
+            byte[] b = new byte[len];
+            while ((len = bis.read(b)) != -1)
+                bos.write(b, 0, len);
+            bos.flush();
+            bis.close();
+            httpUrl.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException("远程文件下载失败");
+        } finally {
+            try {
+                if (bis != null)
+                    bis.close();
+                if (bos != null)
+                    bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return file;
     }
 
 }

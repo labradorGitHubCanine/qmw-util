@@ -48,7 +48,7 @@ public class NumberUtil {
         if (StringUtil.isEmpty(string))
             return "";
         StringBuilder builder = new StringBuilder();
-        for (char c : string.toCharArray())
+        for (char c : string.trim().toCharArray())
             if (Character.isDigit(c))
                 builder.append(c);
         return builder.toString();
