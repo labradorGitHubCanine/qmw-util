@@ -34,7 +34,7 @@ public class FileUtil {
     }
 
     public static String formatFileSize(long size) {
-        return formatFileSize(size, 1);
+        return formatFileSize(size, 0);
     }
 
     public static String getFileType(File file) {

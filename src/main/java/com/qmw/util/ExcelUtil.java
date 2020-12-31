@@ -290,7 +290,10 @@ public class ExcelUtil {
             Cell cell1 = sheet.getRow(row).getCell(i);
             if (cell1 == null) continue;
             for (int j = 1; j <= size; j++) {
-                Cell cell2 = sheet.getRow(row + j).createCell(i);
+                Row row1 = sheet.getRow(row + j);
+                if (row1 == null)
+                    row1 = sheet.createRow(row + j);
+                Cell cell2 = row1.createCell(i);
                 cell2.setCellStyle(cell1.getCellStyle());
                 cell2.setCellValue(getCellValue(cell1));
             }
@@ -315,7 +318,7 @@ public class ExcelUtil {
                 return new Timestamp(date).toString();
         } else {
             // 非日期格式直接解析为string
-            return new DataFormatter().formatCellValue(cell);
+            return new DataFormatter().formatCellValue(cell).trim();
         }
     }
 
