@@ -49,7 +49,8 @@ public class AliyunSMSUtil {
         request.putQueryParameter("PhoneNumbers", String.join(",", phoneNumbers));
         request.putQueryParameter("SignName", SIGN_NAME);
         request.putQueryParameter("TemplateCode", templateCode);
-        request.putQueryParameter("TemplateParam", JSON.toJSONString(params.getMap()));
+        if (params != null)
+            request.putQueryParameter("TemplateParam", params.toString());
         try {
             CommonResponse response = client.getCommonResponse(request);
             return JSON.parseObject(response.getData(), Result.class);
@@ -60,7 +61,7 @@ public class AliyunSMSUtil {
     }
 
     public static Result send(Iterable<String> phoneNumbers, String templateCode) {
-        return send(phoneNumbers, templateCode, new Params());
+        return send(phoneNumbers, templateCode, null);
     }
 
     public static Result send(String phoneNumber, String templateCode, Params params) {
@@ -68,7 +69,7 @@ public class AliyunSMSUtil {
     }
 
     public static Result send(String phoneNumber, String templateCode) {
-        return send(Collections.singletonList(phoneNumber), templateCode, new Params());
+        return send(Collections.singletonList(phoneNumber), templateCode, null);
     }
 
     // 请求参数类
@@ -85,6 +86,13 @@ public class AliyunSMSUtil {
 
         public HashMap<String, Object> getMap() {
             return map == null ? new HashMap<>() : map;
+        }
+
+        @Override
+        public String toString() {
+            if (map == null)
+                map = new HashMap<>();
+            return JSON.toJSONString(map);
         }
 
     }

@@ -135,14 +135,19 @@ public class ExcelUtil {
     /**
      * 读取所有的sheet，并放入一个map中返回，map的key为sheetName
      *
-     * @param stream 文件流
+     * @param stream     文件流
+     * @param headRowNum 表头从第几行开始
      * @return Map
      */
-    public static LinkedHashMap<String, List<LinkedHashMap<String, String>>> readAsMap(InputStream stream) {
+    public static LinkedHashMap<String, List<LinkedHashMap<String, String>>> readAsMap(InputStream stream, int headRowNum) {
         Objects.requireNonNull(stream);
         DataListener listener = new DataListener();
-        EasyExcel.read(stream, listener).doReadAll();
+        EasyExcel.read(stream, listener).headRowNumber(headRowNum).doReadAll();
         return listener.result();
+    }
+
+    public static LinkedHashMap<String, List<LinkedHashMap<String, String>>> readAsMap(InputStream stream) {
+        return readAsMap(stream, 1);
     }
 
     private static class DataListener extends AnalysisEventListener<Map<Integer, String>> {

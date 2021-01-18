@@ -39,6 +39,21 @@ public class NumberUtil {
     }
 
     /**
+     * 判断是否为长整数
+     *
+     * @param object object
+     * @return boolean
+     */
+    public static boolean isLong(Object object) {
+        try {
+            Long.parseLong(object.toString());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
      * 将字符串转换未纯数字（剔除非数字的部分）
      *
      * @param string string
