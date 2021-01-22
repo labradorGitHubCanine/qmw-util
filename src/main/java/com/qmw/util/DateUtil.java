@@ -4,6 +4,10 @@ import com.qmw.exception.CustomException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 日期工具类
@@ -41,6 +45,46 @@ public class DateUtil {
             return new java.sql.Date(timeMillis);
         } catch (ParseException e) {
             throw new CustomException("日期格式错误：" + date + "，正确格式应为yyyy-MM-dd");
+        }
+    }
+
+    public static List<String> getCompareYearRange(String start, String end, String format) {
+        try {
+            List<String> list = new ArrayList<>();
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            Date date1 = sdf.parse(start), date2 = sdf.parse(end);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date1);
+            calendar.add(Calendar.YEAR, -1);
+            list.add(sdf.format(calendar.getTime()));
+
+            calendar.setTime(date2);
+            calendar.add(Calendar.YEAR, -1);
+            list.add(sdf.format(calendar.getTime()));
+            return list;
+
+        } catch (ParseException e) {
+            throw new CustomException("日期解析失败");
+        }
+    }
+
+    public static List<String> getCompareMonthRange(String start, String end, String format) {
+        try {
+            List<String> list = new ArrayList<>();
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            Date date1 = sdf.parse(start), date2 = sdf.parse(end);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date1);
+            calendar.add(Calendar.MONTH, -1);
+            list.add(sdf.format(calendar.getTime()));
+
+            calendar.setTimeInMillis(calendar.getTimeInMillis() - (date2.getTime() - date1.getTime()));
+            list.add(0, sdf.format(calendar.getTime()));
+            return list;
+        } catch (ParseException e) {
+            throw new CustomException("日期解析失败");
         }
     }
 

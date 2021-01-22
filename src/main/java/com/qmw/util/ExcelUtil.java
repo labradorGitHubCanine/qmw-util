@@ -163,10 +163,10 @@ public class ExcelUtil {
         @Override
         public void invoke(Map<Integer, String> data, AnalysisContext context) {
             LinkedHashMap<String, String> map = new LinkedHashMap<>();
-            data.forEach((key, value) -> {
-                if (value != null)
-                    map.put(headMap.get(key), value.trim());
-            });
+//            headMap.forEach((index, value) -> {
+//                map.put(value, StringUtil.ifEmptyThen(data.get(index), ""));
+//            });
+            data.forEach((key, value) -> map.put(headMap.get(key), StringUtil.ifEmptyThen(value, "")));
             if (!map.isEmpty())
                 this.list.add(map);
         }

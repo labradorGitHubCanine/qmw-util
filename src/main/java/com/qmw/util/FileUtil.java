@@ -1,5 +1,7 @@
 package com.qmw.util;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -38,9 +40,13 @@ public class FileUtil {
     }
 
     public static String getFileType(String name) {
-        if (name.contains("."))
+        if (name != null && name.contains("."))
             return name.substring(name.lastIndexOf(".") + 1);
         return "";
+    }
+
+    public static String getFileType(MultipartFile file) {
+        return getFileType(file.getOriginalFilename());
     }
 
 //    /**

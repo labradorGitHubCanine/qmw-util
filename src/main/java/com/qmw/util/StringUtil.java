@@ -87,6 +87,25 @@ public class StringUtil {
                 .reverse().substring(0, scale);
     }
 
+    /**
+     * 生成一个scale位的随机字母串
+     *
+     * @param scale 几位
+     * @return string
+     */
+    public static String randomLetter(int scale) {
+        if (scale <= 0)
+            throw new CustomException("scale必须大于0");
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < scale; i++) {
+            if (random.nextBoolean())
+                sb.append((char) (random.nextInt('z' - 'a' + 1) + 'a'));
+            else
+                sb.append((char) (random.nextInt('Z' - 'A' + 1) + 'A'));
+        }
+        return sb.toString();
+    }
 
     /**
      * 将一个字符串重复拼接times次
