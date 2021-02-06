@@ -88,4 +88,48 @@ public class DateUtil {
         }
     }
 
+    /**
+     * 生成一个最近count天的日期列表，正序排列
+     *
+     * @param timePoint 时间点
+     * @param count     最近几天，负数过去，正数未来
+     * @return 列表
+     */
+    public static List<String> latestDays(long timePoint, int count) {
+        List<String> days = new ArrayList<>();
+        java.sql.Date date = new java.sql.Date(timePoint);
+        do {
+            days.add(count > 0 ? days.size() : 0, date.toString());
+            date.setTime(date.getTime() + 24 * 3600 * 1000 * count / Math.abs(count));
+        } while (days.size() < Math.abs(count));
+        return days;
+    }
+
+    public static List<String> latestDays(int count) {
+        return latestDays(System.currentTimeMillis(), count);
+    }
+
+    /**
+     * 生成一个最近count月的日期列表，正序排列
+     *
+     * @param timePoint 时间点
+     * @param count     最近几月
+     * @return 列表
+     */
+    public static List<String> latestMonths(long timePoint, int count) {
+        List<String> months = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timePoint);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        do {
+            months.add(count > 0 ? months.size() : 0, sdf.format(calendar.getTime()));
+            calendar.add(Calendar.MONTH, count / Math.abs(count));
+        } while (months.size() < Math.abs(count));
+        return months;
+    }
+
+    public static List<String> latestMonths(int count) {
+        return latestMonths(System.currentTimeMillis(), count);
+    }
+
 }

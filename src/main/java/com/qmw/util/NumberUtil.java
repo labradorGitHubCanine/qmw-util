@@ -1,5 +1,10 @@
 package com.qmw.util;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+
 /**
  * 数字相关工具类
  *
@@ -67,6 +72,17 @@ public class NumberUtil {
             if (Character.isDigit(c))
                 builder.append(c);
         return builder.toString();
+    }
+
+    public static BigDecimal sumUp(Number... numbers) {
+        return sumUp(Arrays.asList(numbers));
+    }
+
+    public static BigDecimal sumUp(Iterable<? extends Number> numbers) {
+        BigDecimal sum = BigDecimal.ZERO;
+        for (Number number : numbers)
+            sum = sum.add(new BigDecimal(number.toString()));
+        return sum;
     }
 
 }
