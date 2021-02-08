@@ -1,7 +1,5 @@
 package com.qmw.util;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-
 import java.math.BigDecimal;
 import java.util.Arrays;
 
@@ -83,6 +81,10 @@ public class NumberUtil {
         for (Number number : numbers)
             sum = sum.add(new BigDecimal(number.toString()));
         return sum;
+    }
+
+    public static String zeroFill(int number, int length) {
+        return String.format("%0" + length + "d", number);
     }
 
 }
