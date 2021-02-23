@@ -1,6 +1,7 @@
 package com.qmw.util;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 
 /**
@@ -85,6 +86,18 @@ public class NumberUtil {
 
     public static String zeroFill(int number, int length) {
         return String.format("%0" + length + "d", number);
+    }
+
+    public static String increasementRate(Number newVal, Number oldVal, int scale) {
+        if (oldVal.doubleValue() == 0)
+            return "";
+        double rate = (newVal.doubleValue() / oldVal.doubleValue() - 1) * 100;
+        String neg = rate < 0 ? "" : "+";
+        return neg + new BigDecimal(rate).setScale(scale, RoundingMode.HALF_UP).toPlainString() + "%";
+    }
+
+    public static String increasementRate(Number newVal, Number oldVal) {
+        return increasementRate(newVal, oldVal, 2);
     }
 
 }
