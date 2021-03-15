@@ -1,5 +1,6 @@
 package com.qmw.entity;
 
+import com.qmw.util.StringUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -23,10 +24,11 @@ public class ResponseResult<T> {
 
     // ---------- 静态构造 ----------
 
+    // 成功
     public static <T> ResponseResult<T> ok(T data, String msg) {
         return new ResponseResult<T>()
                 .setCode(ResponseStatus.OK.getCode())
-                .setMsg(msg)
+                .setMsg(StringUtil.ifEmptyThen(msg, ResponseStatus.OK.getMsg()))
                 .setData(data);
     }
 
@@ -37,13 +39,6 @@ public class ResponseResult<T> {
                 .setData(data);
     }
 
-    // 2020-12-14 当使用一个字符串作为返回参数时此方法会造成混淆，需要自定义返回消息请使用 ok(T data, String msg)
-//    public static <T> ResponseResult<T> ok(String msg) {
-//        return new ResponseResult<T>()
-//                .setCode(ResponseStatus.OK.getCode())
-//                .setMsg(msg);
-//    }
-
     public static <T> ResponseResult<T> ok() {
         return new ResponseResult<T>()
                 .setCode(ResponseStatus.OK.getCode())
@@ -53,9 +48,10 @@ public class ResponseResult<T> {
     public static <T> ResponseResult<T> error(ResponseStatus status, String msg) {
         return new ResponseResult<T>()
                 .setCode(status.getCode())
-                .setMsg(msg);
+                .setMsg(StringUtil.ifEmptyThen(msg, status.getMsg()));
     }
 
+    // 失败
     public static <T> ResponseResult<T> error(ResponseStatus status) {
         return new ResponseResult<T>()
                 .setCode(status.getCode())
@@ -65,7 +61,7 @@ public class ResponseResult<T> {
     public static <T> ResponseResult<T> error(String msg) {
         return new ResponseResult<T>()
                 .setCode(ResponseStatus.ERROR.getCode())
-                .setMsg(msg);
+                .setMsg(StringUtil.ifEmptyThen(msg, ResponseStatus.ERROR.getMsg()));
     }
 
     public static <T> ResponseResult<T> error() {
