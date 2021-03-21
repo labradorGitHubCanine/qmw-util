@@ -88,7 +88,7 @@ public class NumberUtil {
         return String.format("%0" + length + "d", number);
     }
 
-    public static String increasementRate(Number newVal, Number oldVal, int scale) {
+    public static String incrementRate(Number newVal, Number oldVal, int scale) {
         if (oldVal.doubleValue() == 0)
             return "";
         double rate = (newVal.doubleValue() / oldVal.doubleValue() - 1) * 100;
@@ -96,8 +96,8 @@ public class NumberUtil {
         return neg + new BigDecimal(rate).setScale(scale, RoundingMode.HALF_UP).toPlainString() + "%";
     }
 
-    public static String increasementRate(Number newVal, Number oldVal) {
-        return increasementRate(newVal, oldVal, 2);
+    public static String incrementRate(Number newVal, Number oldVal) {
+        return incrementRate(newVal, oldVal, 2);
     }
 
 }
