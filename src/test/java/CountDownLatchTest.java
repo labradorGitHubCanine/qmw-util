@@ -1,5 +1,4 @@
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class CountDownLatchTest {
 
@@ -26,14 +25,14 @@ public class CountDownLatchTest {
         }
         latch2.countDown();
 
-        Thread.sleep(10000);
-        System.out.println(a.intValue());
+        Thread.sleep(3000);
+        System.out.println(a);
     }
 
-    private static final AtomicInteger a = new AtomicInteger(0);
+    private static int a = 0;
 
-    public static void aaa() {
-        System.out.println(a.incrementAndGet());
+    public static synchronized void aaa() {
+        System.out.println(a++);
     }
 
 }
