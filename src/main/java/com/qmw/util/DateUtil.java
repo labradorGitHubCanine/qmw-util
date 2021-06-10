@@ -4,9 +4,11 @@ import com.qmw.exception.CustomException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -48,44 +50,31 @@ public class DateUtil {
         }
     }
 
-    public static List<String> getCompareYearRange(String start, String end, String format) {
-        try {
-            List<String> list = new ArrayList<>();
-            SimpleDateFormat sdf = new SimpleDateFormat(format);
-            Date date1 = sdf.parse(start), date2 = sdf.parse(end);
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date1);
-            calendar.add(Calendar.YEAR, -1);
-            list.add(sdf.format(calendar.getTime()));
-
-            calendar.setTime(date2);
-            calendar.add(Calendar.YEAR, -1);
-            list.add(sdf.format(calendar.getTime()));
-            return list;
-
-        } catch (ParseException e) {
-            throw new CustomException("日期解析失败");
-        }
+    /**
+     * 获取同比区间
+     *
+     * @param start 起始日期
+     * @param end   截止日期
+     * @return 同比区间
+     */
+    public static List<YearMonth> getCompareYearRange(YearMonth start, YearMonth end) {
+        List<YearMonth> list = new ArrayList<>(Arrays.asList(start.minusYears(1), end.minusYears(1)));
+        Collections.sort(list);
+        return list;
     }
 
-    public static List<String> getCompareMonthRange(String start, String end, String format) {
-        try {
-            List<String> list = new ArrayList<>();
-            SimpleDateFormat sdf = new SimpleDateFormat(format);
-            Date date1 = sdf.parse(start), date2 = sdf.parse(end);
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date1);
-            calendar.add(Calendar.MONTH, -1);
-            list.add(sdf.format(calendar.getTime()));
-
-            calendar.setTimeInMillis(calendar.getTimeInMillis() - (date2.getTime() - date1.getTime()));
-            list.add(0, sdf.format(calendar.getTime()));
-            return list;
-        } catch (ParseException e) {
-            throw new CustomException("日期解析失败");
-        }
+    /**
+     * 获取环比区间
+     *
+     * @param start 日期起始
+     * @param end   日期截止
+     * @return 环比区间
+     */
+    public static List<YearMonth> getCompareMonthRange(YearMonth start, YearMonth end) {
+        long diff = Math.abs(start.until(end, ChronoUnit.MONTHS));
+        if (end.isBefore(start))
+            start = end;
+        return new ArrayList<>(Arrays.asList(start.minusMonths(1 + diff), start.minusMonths(1)));
     }
 
     /**
@@ -116,20 +105,19 @@ public class DateUtil {
      * @param count     最近几月
      * @return 列表
      */
-    public static List<String> latestMonths(long timePoint, int count) {
-        List<String> months = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(timePoint);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-        do {
-            months.add(count > 0 ? months.size() : 0, sdf.format(calendar.getTime()));
-            calendar.add(Calendar.MONTH, count / Math.abs(count));
-        } while (months.size() < Math.abs(count));
+    public static List<YearMonth> latestMonths(YearMonth timePoint, int count) {
+        YearMonth yearMonth = timePoint;
+        List<YearMonth> months = new ArrayList<>();
+        while (months.size() < Math.abs(count)) {
+            months.add(yearMonth);
+            yearMonth = yearMonth.plusMonths(count / Math.abs(count));
+        }
+        Collections.sort(months);
         return months;
     }
 
-    public static List<String> latestMonths(int count) {
-        return latestMonths(System.currentTimeMillis(), count);
+    public static List<YearMonth> latestMonths(int count) {
+        return latestMonths(YearMonth.now(), count);
     }
 
 }
