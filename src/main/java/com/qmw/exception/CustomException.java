@@ -30,8 +30,4 @@ public class CustomException extends RuntimeException {
         this.status = ResponseStatus.ERROR;
     }
 
-    public static <T> T requireNonEmpty(T obj) {
-        return obj;
-    }
-
 }
