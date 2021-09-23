@@ -115,6 +115,15 @@ public class ExcelUtil {
     }
 
     /**
+     * 保存到本地
+     *
+     * @param map  excel内容
+     * @param path 路径
+     */
+    public static void save(Map<String, List<? extends Map<String, ?>>> map, String path) {
+    }
+
+    /**
      * 读取第一个sheet，并放入一个list中返回
      *
      * @param stream     文件流
@@ -163,10 +172,8 @@ public class ExcelUtil {
         @Override
         public void invoke(Map<Integer, String> data, AnalysisContext context) {
             LinkedHashMap<String, String> map = new LinkedHashMap<>();
-//            headMap.forEach((index, value) -> {
-//                map.put(value, StringUtil.ifEmptyThen(data.get(index), ""));
-//            });
-            data.forEach((key, value) -> map.put(headMap.get(key), StringUtil.ifEmptyThen(value, "")));
+            // 有些对应的表头下没有内容，则data中就不会有对应的数据，这样会导致表头不全，所以优先遍历headMap而非data
+            headMap.forEach((key, value) -> map.put(value, StringUtil.trim(data.get(key))));
             if (!map.isEmpty())
                 this.list.add(map);
         }

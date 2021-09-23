@@ -2,6 +2,11 @@ package com.qmw.util;
 
 import com.alibaba.fastjson.JSON;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * JSON相关工具类
  *
@@ -42,6 +47,12 @@ public class JSONUtil {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public static List<Map<String, Object>> toList(String s) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        JSON.parseArray(s).forEach(e -> list.add(new HashMap<>(JSON.parseObject(e.toString()))));
+        return list;
     }
 
 }

@@ -34,13 +34,13 @@
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <slf4j-simple.version>1.7.30</slf4j-simple.version>
-        <spring-web.version>5.3.1</spring-web.version>
+        <spring-web.version>5.3.9</spring-web.version>
     </properties>
 
     <licenses>
         <license>
             <name>The ApacheSoftware License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
