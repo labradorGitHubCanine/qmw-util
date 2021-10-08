@@ -73,6 +73,16 @@ public class NumberUtil {
         return builder.toString();
     }
 
+    public static String convertToTelephoneNumber(String string) {
+        if (StringUtil.isEmpty(string))
+            return "";
+        StringBuilder builder = new StringBuilder();
+        for (char c : string.trim().toCharArray())
+            if (Character.isDigit(c) || '-' == c)
+                builder.append(c);
+        return builder.toString();
+    }
+
     public static BigDecimal sumUp(Number... numbers) {
         return sumUp(Arrays.asList(numbers));
     }
