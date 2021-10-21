@@ -89,7 +89,7 @@ public class DateUtil {
         java.sql.Date date = new java.sql.Date(timePoint);
         do {
             days.add(count > 0 ? days.size() : 0, date.toString());
-            date.setTime(date.getTime() + 24 * 3600 * 1000 * count / Math.abs(count));
+            date.setTime(date.getTime() + 24L * 3600 * 1000 * count / Math.abs(count));
         } while (days.size() < Math.abs(count));
         return days;
     }
