@@ -29,6 +29,7 @@ public class JdbcUtil {
             connection.close();
             return list;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new CustomException(e.getMessage());
         }
     }
