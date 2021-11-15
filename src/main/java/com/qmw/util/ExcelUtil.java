@@ -114,6 +114,21 @@ public class ExcelUtil {
         }}, response, null);
     }
 
+    // 下载模板，即只包含表头
+    public static void downloadTemplate(List<? extends String> header, HttpServletResponse response, String filename) {
+        download(new HashMap<String, List<? extends Map<String, ?>>>() {{
+            put("sheet1", new ArrayList<Map<String, ?>>(
+                    Collections.singletonList(new LinkedHashMap<String, String>() {{
+                        header.forEach(e -> put(e, ""));
+                    }})
+            ));
+        }}, response, filename);
+    }
+
+    public static void downloadTemplate(List<? extends String> header, HttpServletResponse response) {
+        downloadTemplate(header, response, null);
+    }
+
     /**
      * 保存到本地
      *
