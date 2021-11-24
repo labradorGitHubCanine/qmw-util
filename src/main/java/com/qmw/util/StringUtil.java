@@ -15,18 +15,15 @@ public class StringUtil {
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     public static boolean isEmpty(Object object) {
-        return object == null ||
-                object.toString().trim().isEmpty() ||
-                object.toString().trim().equalsIgnoreCase("null") ||
-                object.toString().trim().equalsIgnoreCase("undefined");
+        return object == null || object.toString().trim().isEmpty();
     }
 
-    public static String ifEmptyThen(Object object, String string) {
+    public static String ifEmpty(Object object, String string) {
         return isEmpty(object) ? string : object.toString().trim();
     }
 
     public static String trim(Object object) {
-        return ifEmptyThen(object, "");
+        return ifEmpty(object, "");
     }
 
     /**

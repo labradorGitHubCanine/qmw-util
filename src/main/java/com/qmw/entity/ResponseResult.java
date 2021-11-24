@@ -28,7 +28,7 @@ public class ResponseResult<T> {
     public static <T> ResponseResult<T> ok(T data, String msg) {
         return new ResponseResult<T>()
                 .setCode(ResponseStatus.OK.getCode())
-                .setMsg(StringUtil.ifEmptyThen(msg, ResponseStatus.OK.getMsg()))
+                .setMsg(StringUtil.ifEmpty(msg, ResponseStatus.OK.getMsg()))
                 .setData(data);
     }
 
@@ -48,7 +48,7 @@ public class ResponseResult<T> {
     public static <T> ResponseResult<T> error(ResponseStatus status, String msg) {
         return new ResponseResult<T>()
                 .setCode(status.getCode())
-                .setMsg(StringUtil.ifEmptyThen(msg, status.getMsg()));
+                .setMsg(StringUtil.ifEmpty(msg, status.getMsg()));
     }
 
     // 失败
@@ -61,7 +61,7 @@ public class ResponseResult<T> {
     public static <T> ResponseResult<T> error(String msg) {
         return new ResponseResult<T>()
                 .setCode(ResponseStatus.ERROR.getCode())
-                .setMsg(StringUtil.ifEmptyThen(msg, ResponseStatus.ERROR.getMsg()));
+                .setMsg(StringUtil.ifEmpty(msg, ResponseStatus.ERROR.getMsg()));
     }
 
     public static <T> ResponseResult<T> error() {

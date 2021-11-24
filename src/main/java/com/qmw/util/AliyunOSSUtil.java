@@ -39,7 +39,7 @@ public class AliyunOSSUtil {
     public static String upload(MultipartFile file, String path) {
         String fileName = UUID.randomUUID().toString();
         String fileType = FileUtil.getFileType(Objects.requireNonNull(file.getOriginalFilename()));
-        String fullName = StringUtil.ifEmptyThen(path, "") + fileName + "." + fileType;
+        String fullName = StringUtil.ifEmpty(path, "") + fileName + "." + fileType;
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
         InputStream stream = null;

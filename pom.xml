@@ -8,7 +8,7 @@
     <!-- 上传云库 mvn clean deploy -P release -->
     <groupId>com.github.labradorgithubcanine</groupId>
     <artifactId>qmw-util</artifactId>
-    <version>1.36</version>
+    <version>1.37</version>
     <name>qmw-util</name>
     <description>util for app</description>
     <url>https://github.com/labradorGitHubCanine/qmw-util</url>

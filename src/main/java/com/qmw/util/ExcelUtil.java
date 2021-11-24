@@ -52,7 +52,7 @@ public class ExcelUtil {
             headFont.setFontHeightInPoints((short) 12); // 12号字
             headStyle.setWriteFont(headFont);
 
-            fileName = URLEncoder.encode(StringUtil.ifEmptyThen(fileName, UUID.randomUUID().toString()) + ".xlsx", StandardCharsets.UTF_8.name());
+            fileName = URLEncoder.encode(StringUtil.ifEmpty(fileName, UUID.randomUUID().toString()) + ".xlsx", StandardCharsets.UTF_8.name());
             response.setContentType("application/x-download");
             response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
             response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
