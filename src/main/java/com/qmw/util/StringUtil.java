@@ -26,6 +26,15 @@ public class StringUtil {
         return ifEmpty(object, "");
     }
 
+    public static String trimAll(Object object) {
+        if (object == null)
+            return "";
+        StringBuilder sb = new StringBuilder();
+        for (String s : object.toString().split(""))
+            sb.append(s.trim());
+        return sb.toString();
+    }
+
     /**
      * 驼峰转下划线
      *
