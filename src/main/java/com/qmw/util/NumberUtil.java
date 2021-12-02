@@ -2,7 +2,9 @@ package com.qmw.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 数字相关工具类
@@ -57,28 +59,23 @@ public class NumberUtil {
         }
     }
 
+
     /**
      * 将字符串转换未纯数字（剔除非数字的部分）
      *
-     * @param string string
-     * @return String
+     * @param string  字符串
+     * @param exclude 不排除的字符串
+     * @return 转换后的数字
      */
-    public static String convertToPureNumber(String string) {
+    public static String convertToPureNumber(String string, char... exclude) {
         if (StringUtil.isEmpty(string))
             return "";
+        List<Character> excludeList = new ArrayList<>();
+        for (char c : exclude)
+            excludeList.add(c);
         StringBuilder builder = new StringBuilder();
         for (char c : string.trim().toCharArray())
-            if (Character.isDigit(c))
-                builder.append(c);
-        return builder.toString();
-    }
-
-    public static String convertToTelephoneNumber(String string) {
-        if (StringUtil.isEmpty(string))
-            return "";
-        StringBuilder builder = new StringBuilder();
-        for (char c : string.trim().toCharArray())
-            if (Character.isDigit(c) || '-' == c)
+            if (Character.isDigit(c) || excludeList.contains(c))
                 builder.append(c);
         return builder.toString();
     }
