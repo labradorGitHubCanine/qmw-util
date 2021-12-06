@@ -1,10 +1,8 @@
 package com.qmw.util;
 
-import com.qmw.exception.CustomException;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.YearMonth;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,21 +30,6 @@ public class DateUtil {
             return true;
         } catch (ParseException e) {
             return false;
-        }
-    }
-
-    /**
-     * 将字符串转换为java.sql.Date
-     *
-     * @param date 字符串
-     * @return java.sql.Date
-     */
-    public static java.sql.Date parseAsSqlDate(String date) {
-        try {
-            long timeMillis = new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime();
-            return new java.sql.Date(timeMillis);
-        } catch (ParseException e) {
-            throw new CustomException("日期格式错误：" + date + "，正确格式应为yyyy-MM-dd");
         }
     }
 
@@ -118,6 +101,10 @@ public class DateUtil {
 
     public static List<YearMonth> latestMonths(int count) {
         return latestMonths(YearMonth.now(), count);
+    }
+
+    public LocalDate toLocalDate(Long time) {
+        return time == null ? null : LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneId.systemDefault()).toLocalDate();
     }
 
 }
