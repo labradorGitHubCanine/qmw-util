@@ -103,7 +103,7 @@ public class DateUtil {
         return latestMonths(YearMonth.now(), count);
     }
 
-    public LocalDate toLocalDate(Long time) {
+    public static LocalDate toLocalDate(Long time) {
         return time == null ? null : LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneId.systemDefault()).toLocalDate();
     }
 
