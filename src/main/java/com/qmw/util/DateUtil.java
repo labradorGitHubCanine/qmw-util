@@ -112,8 +112,12 @@ public class DateUtil {
     public static LocalDate toLocalDate(String date) {
         try {
             return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-M-d"));
-        } catch (DateTimeParseException e) {
-            return null;
+        } catch (DateTimeParseException e1) {
+            try {
+                return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy/M/d"));
+            } catch (DateTimeParseException e2) {
+                return null;
+            }
         }
     }
 
