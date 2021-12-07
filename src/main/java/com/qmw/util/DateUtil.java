@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -109,7 +110,11 @@ public class DateUtil {
     }
 
     public static LocalDate toLocalDate(String date) {
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-M-d"));
+        try {
+            return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-M-d"));
+        } catch (DateTimeParseException e) {
+            return null;
+        }
     }
 
 }
