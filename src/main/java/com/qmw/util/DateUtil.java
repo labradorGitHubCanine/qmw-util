@@ -3,6 +3,7 @@ package com.qmw.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -105,6 +106,10 @@ public class DateUtil {
 
     public static LocalDate toLocalDate(Long time) {
         return time == null ? null : LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneId.systemDefault()).toLocalDate();
+    }
+
+    public static LocalDate toLocalDate(String date) {
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-M-d"));
     }
 
 }
