@@ -17,6 +17,13 @@ import java.util.List;
  */
 public class DateUtil {
 
+    private static final String[] FORMATS = {
+            "yyyy-M-d",
+            "yyyy-M-d HH:mm:ss",
+            "yyyy/M/d",
+            "yyyy/M/d HH:mm:ss",
+    };
+
     /**
      * 判断一个字符串是否指定格式的日期
      *
@@ -26,7 +33,7 @@ public class DateUtil {
      */
     public static boolean isTargetFormat(String date, String format) {
         try {
-            LocalDateTime.parse(date, DateTimeFormatter.ofPattern(format));
+            LocalDate.parse(date, DateTimeFormatter.ofPattern(format));
             return true;
         } catch (DateTimeParseException e) {
             return false;
@@ -108,21 +115,10 @@ public class DateUtil {
     }
 
     public static LocalDate toLocalDate(String date) {
-
-
-        try {
-            return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-M-d"));
-        } catch (DateTimeParseException e1) {
-            try {
-                return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy/M/d"));
-            } catch (DateTimeParseException e2) {
-                return null;
-            }
-        }
-    }
-
-    public static void main(String[] args) {
-        System.out.println(isTargetFormat("2021-01-01", "yyyy-MM-dd"));
+        for (String format : FORMATS)
+            if (isTargetFormat(date, format))
+                return LocalDate.parse(date, DateTimeFormatter.ofPattern(format));
+        return null;
     }
 
 }
