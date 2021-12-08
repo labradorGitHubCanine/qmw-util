@@ -1,7 +1,5 @@
 package com.qmw.util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -28,9 +26,9 @@ public class DateUtil {
      */
     public static boolean isTargetFormat(String date, String format) {
         try {
-            new SimpleDateFormat(format).parse(date);
+            LocalDateTime.parse(date, DateTimeFormatter.ofPattern(format));
             return true;
-        } catch (ParseException e) {
+        } catch (DateTimeParseException e) {
             return false;
         }
     }
@@ -110,6 +108,8 @@ public class DateUtil {
     }
 
     public static LocalDate toLocalDate(String date) {
+
+
         try {
             return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-M-d"));
         } catch (DateTimeParseException e1) {
@@ -119,6 +119,10 @@ public class DateUtil {
                 return null;
             }
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isTargetFormat("2021-01-01", "yyyy-MM-dd"));
     }
 
 }
