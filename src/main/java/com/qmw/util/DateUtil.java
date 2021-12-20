@@ -2,7 +2,6 @@ package com.qmw.util;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +34,7 @@ public class DateUtil {
         try {
             LocalDate.parse(date, DateTimeFormatter.ofPattern(format));
             return true;
-        } catch (DateTimeParseException e) {
+        } catch (Exception e) {
             return false;
         }
     }
