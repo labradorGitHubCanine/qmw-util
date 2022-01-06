@@ -19,8 +19,10 @@ public class DateUtil {
     private static final String[] FORMATS = {
             "yyyy-M-d",
             "yyyy-M-d HH:mm:ss",
+            "yyyy-M-d HH:mm:ss.S",
             "yyyy/M/d",
             "yyyy/M/d HH:mm:ss",
+            "yyyy/M/d HH:mm:ss.S",
     };
 
     /**
