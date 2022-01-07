@@ -153,6 +153,17 @@
             <artifactId>nexus-staging-maven-plugin</artifactId>
             <version>${nexus-staging-maven-plugin.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-beanutils</groupId>
+                    <artifactId>commons-beanutils-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils-core</artifactId>
+            <version>1.8.3</version>
         </dependency>
     </dependencies>
 
