@@ -23,6 +23,7 @@ public class DateUtil {
             "yyyy/M/d",
             "yyyy/M/d HH:mm:ss",
             "yyyy/M/d HH:mm:ss.S",
+            "yyyyMMdd"
     };
 
     /**
