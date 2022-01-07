@@ -337,7 +337,7 @@ public class ExcelUtil {
         if (cell == null)
             return "";
         // 判断是否日期格式
-        if (cell.getCellTypeEnum() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
+        if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
             long date = cell.getDateCellValue().getTime();
             if ((date + DateUtil.DAY_MILLISECONDS / 3) % DateUtil.DAY_MILLISECONDS == 0) // 是0点则转化为yyyy-MM-dd
                 return new Date(date).toString();
