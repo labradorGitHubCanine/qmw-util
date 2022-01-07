@@ -21,11 +21,6 @@ import java.util.UUID;
  */
 public class VideoUtil {
 
-//    public static void main(String[] args) {
-//        Info info = getInfo(new File("C:\\Users\\12334\\Desktop\\lombok.ogv"));
-//        System.out.println(info);
-//    }
-
     public static Info getInfo(File file) {
         MultimediaInfo multimediaInfo;
         try {
