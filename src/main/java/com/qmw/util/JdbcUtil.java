@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class JdbcUtil {
 
-    public static List<Map<String, Object>> query(String url, String username, String password, String sql) {
+    public static List<Map<String, Object>> query(String url, String username, String password, String sql, Database database) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(database.getDriverClassName());
             Connection connection = DriverManager.getConnection(url, username, password);
             Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(sql);
@@ -34,8 +34,25 @@ public class JdbcUtil {
         }
     }
 
-    public static void test(String url, String username, String password) {
-        query(url, username, password, "select 1");
+    public static void test(String url, String username, String password, Database database) {
+        query(url, username, password, "select 1", database);
+    }
+
+    public enum Database {
+
+        MySQL("com.mysql.cj.jdbc.Driver"),
+        SQLServer("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+        private final String driverClassName;
+
+        Database(String driverClassName) {
+            this.driverClassName = driverClassName;
+        }
+
+        public String getDriverClassName() {
+            return driverClassName;
+        }
+
     }
 
 }
