@@ -1,6 +1,7 @@
 package com.qmw.util;
 
 import com.qmw.exception.CustomException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class JdbcUtil {
 
     public static List<Map<String, Object>> query(String url, String username, String password, String sql, Database database) {
@@ -29,7 +31,7 @@ public class JdbcUtil {
             connection.close();
             return list;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             throw new CustomException(e.getMessage());
         }
     }
