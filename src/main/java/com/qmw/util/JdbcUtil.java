@@ -31,7 +31,7 @@ public class JdbcUtil {
             connection.close();
             return list;
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("com.qmw.util.JdbcUtil 异常：", e);
             throw new CustomException(e.getMessage());
         }
     }
