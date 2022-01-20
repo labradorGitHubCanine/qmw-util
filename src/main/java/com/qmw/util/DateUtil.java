@@ -1,5 +1,6 @@
 package com.qmw.util;
 
+import java.sql.Date;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -120,7 +121,11 @@ public class DateUtil {
         for (String format : FORMATS)
             if (isTargetFormat(date, format))
                 return LocalDate.parse(date, DateTimeFormatter.ofPattern(format));
-        return null;
+        try {
+            return new Date(Long.parseLong(date)).toLocalDate();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
