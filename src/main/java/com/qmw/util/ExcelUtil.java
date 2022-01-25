@@ -4,6 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
+import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
@@ -18,6 +19,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -43,7 +45,7 @@ public class ExcelUtil {
      * @param response response
      * @param fileName 文件名
      */
-    public static void download(Map<String, List<? extends Map<String, ?>>> map, HttpServletResponse response, String fileName) {
+    public static void download(Map<String, List<Map<String, Object>>> map, HttpServletResponse response, String fileName) {
         try {
             WriteCellStyle headStyle = new WriteCellStyle(); // 重写头部样式
             headStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex()); // 白色背景
@@ -52,19 +54,27 @@ public class ExcelUtil {
             headFont.setFontHeightInPoints((short) 12); // 12号字
             headStyle.setWriteFont(headFont);
 
-            fileName = URLEncoder.encode(StringUtil.ifEmpty(fileName, UUID.randomUUID().toString()) + ".xlsx", StandardCharsets.UTF_8.name());
-            response.setContentType("application/x-download");
-            response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
-            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
-            ExcelWriter writer = EasyExcel.write(response.getOutputStream())
+            ExcelWriterBuilder builder;
+            if (response != null) {
+                fileName = URLEncoder.encode(StringUtil.ifEmpty(fileName, UUID.randomUUID().toString()) + ".xlsx", StandardCharsets.UTF_8.name());
+                response.setContentType("application/x-download");
+                response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+                response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+                builder = EasyExcel.write(response.getOutputStream());
+            } else {
+                FileOutputStream stream = new FileOutputStream(fileName);
+                builder = EasyExcel.write(stream);
+            }
+            ExcelWriter writer = builder
                     .registerWriteHandler(new HorizontalCellStyleStrategy(headStyle, new WriteCellStyle()))
                     .build();
 
             if (map != null) {
                 int a = 0;
-                for (Map.Entry<String, List<? extends Map<String, ?>>> e : map.entrySet()) {
+                for (Map.Entry<String, List<Map<String, Object>>> e : map.entrySet()) {
                     String sheetName = e.getKey();
-                    List<? extends Map<String, ?>> list = e.getValue();
+                    List<Map<String, Object>> list = e.getValue();
+
                     List<List<String>> head = new ArrayList<>(); // 表头
                     List<List<String>> data = new ArrayList<>(); // 内容
                     if (list != null && !list.isEmpty()) {
@@ -80,7 +90,7 @@ public class ExcelUtil {
                                 Object value = i.get(j.get(0));
                                 if (value instanceof Number) // 防止变成科学计数
                                     value = new BigDecimal(value.toString()).toPlainString();
-                                row.add(value == null ? "" : value.toString());
+                                row.add(StringUtil.trim(value));
                             });
                             data.add(row);
                         });
@@ -98,44 +108,51 @@ public class ExcelUtil {
         }
     }
 
-    public static void download(Map<String, List<? extends Map<String, ?>>> map, HttpServletResponse response) {
+    public static void download(Map<String, List<Map<String, Object>>> map, HttpServletResponse response) {
         download(map, response, null);
     }
 
-    public static void download(List<? extends Map<String, ?>> list, HttpServletResponse response, String fileName) {
-        download(new HashMap<String, List<? extends Map<String, ?>>>() {{
+    public static void download(List<Map<String, Object>> list, HttpServletResponse response, String fileName) {
+        download(new HashMap<String, List<Map<String, Object>>>() {{
             put("sheet1", list);
         }}, response, fileName);
     }
 
-    public static void download(List<? extends Map<String, ?>> list, HttpServletResponse response) {
-        download(new HashMap<String, List<? extends Map<String, ?>>>() {{
+    public static void download(List<Map<String, Object>> list, HttpServletResponse response) {
+        download(new HashMap<String, List<Map<String, Object>>>() {{
             put("sheet1", list);
         }}, response, null);
     }
 
     // 下载模板，即只包含表头
-    public static void downloadTemplate(List<? extends String> header, HttpServletResponse response, String filename) {
-        download(new HashMap<String, List<? extends Map<String, ?>>>() {{
-            put("sheet1", new ArrayList<Map<String, ?>>(
-                    Collections.singletonList(new LinkedHashMap<String, String>() {{
+    public static void downloadTemplate(List<String> header, HttpServletResponse response, String filename) {
+        download(new HashMap<String, List<Map<String, Object>>>() {{
+            put("sheet1", new ArrayList<>(
+                    Collections.singletonList(new LinkedHashMap<String, Object>() {{
                         header.forEach(e -> put(e, ""));
                     }})
             ));
         }}, response, filename);
     }
 
-    public static void downloadTemplate(List<? extends String> header, HttpServletResponse response) {
+    public static void downloadTemplate(List<String> header, HttpServletResponse response) {
         downloadTemplate(header, response, null);
     }
 
     /**
      * 保存到本地
      *
-     * @param map  excel内容
-     * @param path 路径
+     * @param map      excel内容
+     * @param filePath 路径
      */
-    public static void save(Map<String, List<? extends Map<String, ?>>> map, String path) {
+    public static void save(Map<String, List<Map<String, Object>>> map, String filePath) {
+        download(map, null, filePath);
+    }
+
+    public static void save(List<Map<String, Object>> list, String filePath) {
+        download(new HashMap<String, List<Map<String, Object>>>() {{
+            put("sheet1", list);
+        }}, null, filePath);
     }
 
     /**
