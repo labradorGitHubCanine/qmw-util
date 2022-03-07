@@ -6,7 +6,7 @@
 
     <!-- 本地安装 mvn clean install -->
     <!-- 上传云库 mvn clean deploy -P release -->
-    <groupId>com.github.labradorgithubcanine</groupId>
+    <groupId>com.GitHub.labradorgithubcanine</groupId>
     <artifactId>qmw-util</artifactId>
     <version>1.37</version>
     <name>qmw-util</name>
@@ -22,9 +22,9 @@
         <skipTests>true</skipTests>
         <!-- versions -->
         <aliyun-java-sdk-core.version>4.5.30</aliyun-java-sdk-core.version>
-        <aliyun-sdk-oss.version>3.13.2</aliyun-sdk-oss.version>
+        <aliyun-sdk-oss.version>3.14.0</aliyun-sdk-oss.version>
         <easyexcel.version>3.0.5</easyexcel.version>
-        <fastjson.version>1.2.78</fastjson.version>
+        <fastjson.version>1.2.79</fastjson.version>
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
         <jave.version>1.0.5</jave.version>
         <lombok.version>1.18.22</lombok.version>
@@ -32,8 +32,8 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <mybatis-plus.version>3.4.3.4</mybatis-plus.version>
-        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+        <mybatis-plus.version>3.5.1</mybatis-plus.version>
+        <nexus-staging-maven-plugin.version>1.6.12</nexus-staging-maven-plugin.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <slf4j-simple.version>1.7.30</slf4j-simple.version>
         <spring-web.version>5.3.13</spring-web.version>
