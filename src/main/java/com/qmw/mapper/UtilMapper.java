@@ -1,6 +1,7 @@
 package com.qmw.mapper;
 
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 public interface UtilMapper {
 
@@ -18,5 +19,8 @@ public interface UtilMapper {
 
     @Select("select sum(INDEX_LENGTH) from information_schema.TABLES where TABLE_SCHEMA=(select database())")
     long indexLength(); // 索引总大小
+
+    @Update("alter table ${param1} AUTO_INCREMENT = 1")
+    void resetAutoIncrement(String tableName); // 重置自增主键
 
 }
