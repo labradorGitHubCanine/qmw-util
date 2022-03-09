@@ -30,4 +30,14 @@ public class CustomException extends RuntimeException {
         this.status = ResponseStatus.ERROR;
     }
 
+    public static void throwIf(boolean condition, String info) {
+        if (condition)
+            throw new CustomException(info);
+    }
+
+    public static void throwIf(boolean condition) {
+        if (condition)
+            throw new CustomException();
+    }
+
 }

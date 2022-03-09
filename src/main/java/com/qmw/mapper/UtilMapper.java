@@ -3,6 +3,9 @@ package com.qmw.mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+import java.util.Map;
+
 public interface UtilMapper {
 
     @Select("select database()")
@@ -22,5 +25,11 @@ public interface UtilMapper {
 
     @Update("alter table ${param1} AUTO_INCREMENT = 1")
     void resetAutoIncrement(String tableName); // 重置自增主键
+
+    @Select("show full columns from ${param1}")
+    List<Map<String, Object>> showFullColumns(String tableName);
+
+    @Select("desc ${param1}")
+    List<Map<String, Object>> desc(String tableName);
 
 }
