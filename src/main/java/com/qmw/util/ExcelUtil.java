@@ -23,10 +23,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -162,14 +164,14 @@ public class ExcelUtil {
      * @param headRowNum 表头从第几行开始
      * @return List
      */
-    public static List<LinkedHashMap<String, String>> readAsList(InputStream stream, int headRowNum) {
+    public static List<Map<String, Object>> readAsList(InputStream stream, int headRowNum) {
         Objects.requireNonNull(stream);
         DataListener listener = new DataListener();
         EasyExcel.read(stream, listener).sheet().headRowNumber(headRowNum).doRead();
         return listener.result().values().iterator().next();
     }
 
-    public static List<LinkedHashMap<String, String>> readAsList(InputStream stream) {
+    public static List<Map<String, Object>> readAsList(InputStream stream) {
         return readAsList(stream, 1);
     }
 
@@ -180,30 +182,60 @@ public class ExcelUtil {
      * @param headRowNum 表头从第几行开始
      * @return Map
      */
-    public static LinkedHashMap<String, List<LinkedHashMap<String, String>>> readAsMap(InputStream stream, int headRowNum) {
+    public static Map<String, List<Map<String, Object>>> readAsMap(InputStream stream, int headRowNum) {
         Objects.requireNonNull(stream);
         DataListener listener = new DataListener();
         EasyExcel.read(stream, listener).headRowNumber(headRowNum).doReadAll();
         return listener.result();
     }
 
-    public static LinkedHashMap<String, List<LinkedHashMap<String, String>>> readAsMap(InputStream stream) {
+    public static Map<String, List<Map<String, Object>>> readAsMap(InputStream stream) {
         return readAsMap(stream, 1);
     }
 
-    private static class DataListener extends AnalysisEventListener<Map<Integer, String>> {
+    public static List<Map<String, Object>> remoteReadAsList(String url, int headRowNum) {
+        try {
+            URLConnection connection = new URL(url).openConnection();
+            connection.connect();
+            return readAsList(connection.getInputStream(), headRowNum);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new CustomException("远程读取文件异常");
+        }
+    }
 
-        private final LinkedHashMap<String, List<LinkedHashMap<String, String>>> map = new LinkedHashMap<>(); // sheetName - list
-        private final List<LinkedHashMap<String, String>> list = new ArrayList<>(); // list
+    public static List<Map<String, Object>> remoteReadAsList(String url) {
+        return remoteReadAsList(url, 1);
+    }
+
+    public static Map<String, List<Map<String, Object>>> remoteReadAsMap(String url, int headRowNum) {
+        try {
+            URLConnection connection = new URL(url).openConnection();
+            connection.connect();
+            return readAsMap(connection.getInputStream(), headRowNum);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new CustomException("远程读取文件异常");
+        }
+    }
+
+    public static Map<String, List<Map<String, Object>>> remoteReadAsMap(String url) {
+        return remoteReadAsMap(url, 1);
+    }
+
+    private static class DataListener extends AnalysisEventListener<Map<Integer, Object>> {
+
+        private final Map<String, List<Map<String, Object>>> map = new LinkedHashMap<>(); // sheetName - list
+        private final List<Map<String, Object>> list = new ArrayList<>(); // list
         private Map<Integer, String> headMap;
 
-        public LinkedHashMap<String, List<LinkedHashMap<String, String>>> result() {
+        public Map<String, List<Map<String, Object>>> result() {
             return this.map;
         }
 
         @Override
-        public void invoke(Map<Integer, String> data, AnalysisContext context) {
-            LinkedHashMap<String, String> map = new LinkedHashMap<>();
+        public void invoke(Map<Integer, Object> data, AnalysisContext context) {
+            Map<String, Object> map = new LinkedHashMap<>();
             // 有些对应的表头下没有内容，则data中就不会有对应的数据，这样会导致表头不全，所以优先遍历headMap而非data
             headMap.forEach((key, value) -> map.put(value, StringUtil.trim(data.get(key))));
             if (!map.isEmpty())
@@ -355,15 +387,16 @@ public class ExcelUtil {
             return "";
         // 判断是否日期格式
         if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
-            long date = cell.getDateCellValue().getTime();
-            if ((date + DateUtil.DAY_MILLISECONDS / 3) % DateUtil.DAY_MILLISECONDS == 0) // 是0点则转化为yyyy-MM-dd
-                return new Date(date).toString();
-            else // 不是0点则转化为yyyy-MM-dd HH:mm:ss
-                return new Timestamp(date).toString();
+            LocalDateTime date = cell.getLocalDateTimeCellValue();
+            if (date.getHour() == 0 && date.getMinute() == 0 && date.getSecond() == 0) // 是0点则返回yyyy-MM-dd
+                return date.toLocalDate().toString();
+            else // 不是则返回时分秒
+                return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         } else {
             // 非日期格式直接解析为string
             return new DataFormatter().formatCellValue(cell).trim();
         }
     }
+
 
 }

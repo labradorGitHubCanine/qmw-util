@@ -17,10 +17,6 @@ import java.util.List;
  */
 public class DateUtil {
 
-    public static void main(String[] args) {
-        System.out.println(toLocalDate("2021-01-03 14:22:32.11"));
-    }
-
     private static final String[] FORMATS = {
             "yyyy-M-d",
             "yyyy-M-d HH:mm:ss",
