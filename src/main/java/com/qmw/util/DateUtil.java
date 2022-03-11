@@ -1,7 +1,10 @@
 package com.qmw.util;
 
 import java.sql.Date;
-import java.time.*;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -17,18 +20,23 @@ import java.util.List;
  */
 public class DateUtil {
 
-    private static final String[] FORMATS = {
+    private static final String[] LOCAL_DATE_FORMATS = {
             "yyyy-M-d",
+            "yyyy/M/d",
+            "yyyyMMdd"
+    };
+
+    private static final String[] LOCAL_DATE_TIME_FORMATS = {
+            "yyyy-M-d HH:mm",
             "yyyy-M-d HH:mm:ss",
             "yyyy-M-d HH:mm:ss.S",
             "yyyy-M-d HH:mm:ss.SS",
             "yyyy-M-d HH:mm:ss.SSS",
-            "yyyy/M/d",
+            "yyyy/M/d HH:mm",
             "yyyy/M/d HH:mm:ss",
             "yyyy/M/d HH:mm:ss.S",
             "yyyy/M/d HH:mm:ss.SS",
             "yyyy/M/d HH:mm:ss.SSS",
-            "yyyyMMdd"
     };
 
     /**
@@ -118,15 +126,36 @@ public class DateUtil {
     }
 
     public static LocalDate toLocalDate(Long time) {
-        return time == null ? null : LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneId.systemDefault()).toLocalDate();
+        return new Date(time).toLocalDate();
     }
 
     public static LocalDate toLocalDate(String date) {
-        for (String format : FORMATS)
+        for (String format : LOCAL_DATE_FORMATS)
+            if (isTargetFormat(date, format))
+                return LocalDate.parse(date, DateTimeFormatter.ofPattern(format));
+        for (String format : LOCAL_DATE_TIME_FORMATS)
             if (isTargetFormat(date, format))
                 return LocalDate.parse(date, DateTimeFormatter.ofPattern(format));
         try {
             return new Date(Long.parseLong(date)).toLocalDate();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static LocalDateTime toLocalDateTime(Long time) {
+        return new Timestamp(time).toLocalDateTime();
+    }
+
+    public static LocalDateTime toLocalDateTime(String date) {
+        for (String format : LOCAL_DATE_FORMATS)
+            if (isTargetFormat(date, format))
+                return LocalDateTime.parse(date + " 00:00", DateTimeFormatter.ofPattern(format + " HH:mm"));
+        for (String format : LOCAL_DATE_TIME_FORMATS)
+            if (isTargetFormat(date, format))
+                return LocalDateTime.parse(date, DateTimeFormatter.ofPattern(format));
+        try {
+            return new Timestamp(Long.parseLong(date)).toLocalDateTime();
         } catch (Exception e) {
             return null;
         }

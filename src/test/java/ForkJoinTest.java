@@ -1,5 +1,8 @@
 import java.io.File;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.RecursiveTask;
 
 public class ForkJoinTest {
 
@@ -36,24 +39,20 @@ public class ForkJoinTest {
     static class FilePrinter extends RecursiveAction {
 
         private final File directory;
-        private final String fileType;
 
-        public FilePrinter(File directory, String fileType) {
+        public FilePrinter(File directory) {
             this.directory = directory;
-            this.fileType = fileType;
         }
 
         @Override
         protected void compute() {
             for (File file : directory.listFiles()) {
                 if (file.isDirectory()) {
-
-                    FilePrinter printer = new FilePrinter(file, fileType);
+                    FilePrinter printer = new FilePrinter(file);
+//                    invokeAll(printer);
                     printer.fork();
-
                 } else {
-                    if (file.getName().endsWith(fileType))
-                        System.out.println(file.getAbsolutePath());
+                    System.out.println(file.getAbsolutePath());
                 }
             }
         }
@@ -62,41 +61,19 @@ public class ForkJoinTest {
 
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-//        ForkJoinPool pool = new ForkJoinPool();
-////        ForkJoinTask<Integer> taskFuture = pool.submit(new SumUp(1, 1000));
-////        System.out.println(taskFuture.get());
-//
-//        pool.submit(new FilePrinter(new File("E://"), "xlsx"));
+        long t1 = System.currentTimeMillis();
+        ForkJoinPool pool = new ForkJoinPool();
+//        ForkJoinTask<Integer> taskFuture = pool.submit(new SumUp(1, 1000));
+//        System.out.println(taskFuture.get());
+
+        FilePrinter filePrinter = new FilePrinter(new File("E://"));
+        pool.execute(filePrinter);
+        filePrinter.join();
+        pool.shutdown();
+        long t2 = System.currentTimeMillis();
+        System.out.println(t2 - t1 + "ms");
 //        pool.awaitTermination(10, TimeUnit.SECONDS);
-//        pool.shutdown();
 
-        System.out.println(test1());
-        System.out.println(test2());
-    }
-
-    private static int test1() {
-
-        int i = 1;
-        try {
-            return i;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            i = 0;
-        }
-        return i;
-    }
-
-    private static int test2() {
-        int i = 1;
-        try {
-            return i;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            i = 0;
-            return i;
-        }
     }
 
 }
