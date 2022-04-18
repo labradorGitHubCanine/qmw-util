@@ -22,11 +22,9 @@ public class ForkJoinUtil {
         @Override
         protected void compute() {
             if (list.size() > maxSize) {
-                MyRecursiveAction<T> left = new MyRecursiveAction<T>(maxSize, list.subList(0, list.size() / 2), consumer);
-                MyRecursiveAction<T> right = new MyRecursiveAction<T>(maxSize, list.subList(list.size() / 2, list.size()), consumer);
+                MyRecursiveAction<T> left = new MyRecursiveAction<>(maxSize, list.subList(0, list.size() / 2), consumer);
+                MyRecursiveAction<T> right = new MyRecursiveAction<>(maxSize, list.subList(list.size() / 2, list.size()), consumer);
                 invokeAll(left, right); // 同步执行
-//                left.fork();
-//                right.fork();
             } else {
                 consumer.accept(list);
             }
@@ -35,7 +33,7 @@ public class ForkJoinUtil {
 
     public static <T> void doAction(int maxSize, List<T> list, Consumer<List<T>> consumer) {
         ForkJoinPool pool = new ForkJoinPool();
-        pool.invoke(new MyRecursiveAction<T>(maxSize, list, consumer)); // 同步执行
+        pool.invoke(new MyRecursiveAction<>(maxSize, list, consumer)); // 同步执行
         pool.shutdown();
     }
 

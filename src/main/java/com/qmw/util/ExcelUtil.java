@@ -4,13 +4,18 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
+import com.alibaba.excel.metadata.Head;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
+import com.alibaba.excel.write.handler.CellWriteHandler;
 import com.alibaba.excel.write.metadata.WriteSheet;
+import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
+import com.alibaba.excel.write.metadata.holder.WriteTableHolder;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
 import com.qmw.entity.CellInfo;
 import com.qmw.exception.CustomException;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.*;
@@ -69,6 +74,7 @@ public class ExcelUtil {
             }
             ExcelWriter writer = builder
                     .registerWriteHandler(new HorizontalCellStyleStrategy(headStyle, new WriteCellStyle()))
+//                    .registerWriteHandler(new CustomeCellWriteHandler())
                     .build();
 
             if (map != null) {
@@ -398,5 +404,31 @@ public class ExcelUtil {
         }
     }
 
+    private static class CustomeCellWriteHandler implements CellWriteHandler {
+
+        @Override
+        public void afterCellCreate(WriteSheetHolder writeSheetHolder,
+                                    WriteTableHolder writeTableHolder,
+                                    Cell cell,
+                                    Head head,
+                                    Integer integer,
+                                    Boolean aBoolean) {
+
+            System.out.println(cell.getAddress());
+            cell.setCellValue("aaa");
+            //当前行的第i列
+            // int i = cell.getColumnIndex();
+            //不处理第一行
+            if (0 != cell.getRowIndex()) {
+                if (2 == cell.getColumnIndex()) {
+                    Workbook workbook = writeSheetHolder.getSheet().getWorkbook();
+                    CellStyle cellStyle = workbook.createCellStyle();
+                    DataFormat dataFormat = workbook.createDataFormat();
+                    cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
+                    cell.setCellStyle(cellStyle);
+                }
+            }
+        }
+    }
 
 }
