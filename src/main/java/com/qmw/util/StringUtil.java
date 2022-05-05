@@ -2,7 +2,7 @@ package com.qmw.util;
 
 import com.qmw.exception.CustomException;
 
-import java.util.Random;
+import java.util.*;
 
 /**
  * 字符串相关工具类
@@ -75,6 +75,16 @@ public class StringUtil {
             }
         }
         return sb.toString();
+    }
+
+    public static List<Map<String, Object>> under2camel(List<Map<String, Object>> list) {
+        List<Map<String, Object>> returnList = new ArrayList<>();
+        list.forEach(e -> {
+            Map<String, Object> map = new HashMap<>();
+            e.forEach((k, v) -> map.put(under2camel(k), v));
+            returnList.add(map);
+        });
+        return returnList;
     }
 
     /**

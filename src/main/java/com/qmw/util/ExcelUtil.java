@@ -74,7 +74,7 @@ public class ExcelUtil {
             }
             ExcelWriter writer = builder
                     .registerWriteHandler(new HorizontalCellStyleStrategy(headStyle, new WriteCellStyle()))
-//                    .registerWriteHandler(new CustomeCellWriteHandler())
+//                    .registerWriteHandler(new CustomCellWriteHandler())
                     .build();
 
             if (map != null) {
@@ -404,7 +404,7 @@ public class ExcelUtil {
         }
     }
 
-    private static class CustomeCellWriteHandler implements CellWriteHandler {
+    private static class CustomCellWriteHandler implements CellWriteHandler {
 
         @Override
         public void afterCellCreate(WriteSheetHolder writeSheetHolder,
