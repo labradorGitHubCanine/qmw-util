@@ -155,7 +155,7 @@ public class DateUtil {
             if (isTargetFormat(date, format))
                 return LocalDateTime.parse(date, DateTimeFormatter.ofPattern(format));
         try {
-            return new Timestamp(Long.parseLong(date)).toLocalDateTime();
+            return toLocalDateTime(Long.parseLong(date));
         } catch (Exception e) {
             return null;
         }
