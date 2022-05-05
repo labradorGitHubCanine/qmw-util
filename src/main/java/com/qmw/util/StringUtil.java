@@ -69,9 +69,9 @@ public class StringUtil {
             String c = arr[i];
             if (!isEmpty(c)) {
                 if (i == 0) // 首字母不转大写
-                    sb.append(arr[i].toLowerCase());
+                    sb.append(c);
                 else
-                    sb.append(Character.toUpperCase(c.charAt(0))).append(c.substring(1).toLowerCase());
+                    sb.append(Character.toUpperCase(c.charAt(0))).append(c.substring(1));
             }
         }
         return sb.toString();
