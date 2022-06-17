@@ -59,6 +59,12 @@ public class NumberUtil {
         }
     }
 
+    // 判断前者是否后面那个数字
+    public static boolean equals(Object o, Number number) {
+        if (!isNumber(o))
+            return false;
+        return new BigDecimal(o.toString()).doubleValue() == number.doubleValue();
+    }
 
     /**
      * 将字符串转换未纯数字（剔除非数字的部分）
