@@ -3,11 +3,12 @@ package com.qmw.util;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Arrays;
+import java.util.Objects;
 
-public class BigDecimalUtil {
+public class DecimalUtil {
 
     public static BigDecimal add(Object... objects) {
-        return Arrays.stream(objects).map(o -> new BigDecimal(o.toString())).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return Arrays.stream(objects).filter(Objects::nonNull).map(o -> new BigDecimal(o.toString())).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public static BigDecimal subtract(Object o1, Object... o2) {
@@ -19,7 +20,8 @@ public class BigDecimalUtil {
     public static BigDecimal multiply(Object... objects) {
         BigDecimal sum = BigDecimal.ONE;
         for (Object o : objects)
-            sum = sum.multiply(new BigDecimal(String.valueOf(o)));
+            if (o != null)
+                sum = sum.multiply(new BigDecimal(o.toString()));
         return sum;
     }
 
