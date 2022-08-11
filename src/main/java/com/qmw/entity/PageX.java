@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,6 +41,11 @@ public class PageX<T> extends Page<T> implements IPage<T> {
 
     public PageX(long current, long size, long total, boolean isSearchCount) {
         super(current, size, total, isSearchCount);
+    }
+
+    public PageX<T> setRecords(List<T> records) {
+        this.records = records;
+        return this;
     }
 
     public PageX<T> putExtra(String key, Object value) {

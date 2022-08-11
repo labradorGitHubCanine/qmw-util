@@ -51,7 +51,9 @@ public class JSONUtil {
 
     public static List<Map<String, Object>> toList(String s) {
         List<Map<String, Object>> list = new ArrayList<>();
-        JSON.parseArray(s).forEach(e -> list.add(new HashMap<>(JSON.parseObject(e.toString()))));
+        JSON.parseArray(s, Map.class).forEach(e ->
+                list.add(new HashMap<>(JSON.parseObject(e.toString())))
+        );
         return list;
     }
 
