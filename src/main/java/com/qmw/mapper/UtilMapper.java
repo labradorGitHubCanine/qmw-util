@@ -23,10 +23,10 @@ public interface UtilMapper {
     @Select("select sum(INDEX_LENGTH) from information_schema.TABLES where TABLE_SCHEMA=(select database())")
     long indexLength(); // 索引总大小
 
-    @Update("alter table ${param1} AUTO_INCREMENT = 1")
-    void resetAutoIncrement(String tableName); // 重置自增主键
+    @Update("alter table ${table} AUTO_INCREMENT = 1")
+    void resetAutoIncrement(String table); // 重置自增主键
 
-    @Select("show full columns from ${param1}")
-    List<ColumnInfo> showFullColumns(String tableName);
+    @Select("show full columns from ${table}")
+    List<ColumnInfo> showFullColumns(String table);
 
 }
