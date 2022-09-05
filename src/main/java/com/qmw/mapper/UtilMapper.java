@@ -1,10 +1,10 @@
 package com.qmw.mapper;
 
+import com.qmw.entity.ColumnInfo;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
-import java.util.Map;
 
 public interface UtilMapper {
 
@@ -27,9 +27,6 @@ public interface UtilMapper {
     void resetAutoIncrement(String tableName); // 重置自增主键
 
     @Select("show full columns from ${param1}")
-    List<Map<String, Object>> showFullColumns(String tableName);
-
-    @Select("desc ${param1}")
-    List<Map<String, Object>> desc(String tableName);
+    List<ColumnInfo> showFullColumns(String tableName);
 
 }
