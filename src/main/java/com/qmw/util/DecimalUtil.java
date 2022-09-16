@@ -31,4 +31,23 @@ public class DecimalUtil {
         return divisor.divide(dividend, scale, RoundingMode.HALF_UP);
     }
 
+    public static BigDecimal parse(Object number) {
+        try {
+            return new BigDecimal(number.toString());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static BigDecimal increment(Object nval, Object oval) {
+        try {
+            if (nval == null) nval = "0";
+            BigDecimal newValue = new BigDecimal(nval.toString());
+            BigDecimal oldValue = new BigDecimal(oval.toString());
+            return newValue.subtract(oldValue).divide(oldValue.abs(), 4, RoundingMode.HALF_UP);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

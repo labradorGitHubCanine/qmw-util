@@ -8,7 +8,7 @@
     <!-- 上传云库 mvn clean deploy -P release -->
     <groupId>com.GitHub.labradorgithubcanine</groupId>
     <artifactId>qmw-util</artifactId>
-    <version>1.37</version>
+    <version>1.38</version>
     <name>qmw-util</name>
     <description>util for app</description>
     <url>https://github.com/labradorGitHubCanine/qmw-util</url>
@@ -65,7 +65,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>2.0.12</version>
+            <version>2.0.13</version>
         </dependency>
         <dependency>
             <groupId>com.belerweb</groupId>
