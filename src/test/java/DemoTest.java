@@ -21,4 +21,12 @@ public class DemoTest {
         System.out.println(lengthOfLongestSubstring("abcabcbb"));
     }
 
+    static class A {
+
+    }
+
+    static class B extends A {
+
+    }
+
 }
